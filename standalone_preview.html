@@ -28,7 +28,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=4')
+        navigator.serviceWorker.register('./sw.js?v=5')
           .then((reg) => {
             console.log('[CineVerse PWA] Service Worker active:', reg.scope);
             reg.update();
@@ -127,19 +127,47 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
     }
+    html {
+      height: -webkit-fill-available;
+    }
     body {
       background-color: #080808;
       color: #ffffff;
       font-family: 'Outfit', sans-serif;
       overflow-x: hidden;
-      padding-top: env(safe-area-inset-top, 0px);
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: none;
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
+    }
+    /* iOS Safe Area Utility Classes */
+    .pt-safe {
+      padding-top: max(env(safe-area-inset-top, 0px), 0px) !important;
+    }
+    .pb-safe {
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 0px) !important;
+    }
+    .pl-safe {
+      padding-left: max(env(safe-area-inset-left, 0px), 0px) !important;
+    }
+    .pr-safe {
+      padding-right: max(env(safe-area-inset-right, 0px), 0px) !important;
+    }
+    .top-safe {
+      top: max(env(safe-area-inset-top, 0px), 0px) !important;
+    }
+    .bottom-safe {
+      bottom: max(env(safe-area-inset-bottom, 0px), 0px) !important;
     }
     /* Native smooth bottom bar clearance for mobile */
     @media (max-width: 640px) {
       body {
-        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
       }
     }
     .font-display {
@@ -243,9 +271,9 @@
           { name: 'Kamal Haasan', role: 'Supreme Yaskin', characterBadge: 'Ruler of The Complex', profilePath: 'https://image.tmdb.org/t/p/w185/17zscZgz4wOlGDd3Gziw4YbI3G.jpg' },
           { name: 'Deepika Padukone', role: 'SUM-80 (Sumathi)', characterBadge: 'The Prophetic Mother', profilePath: 'https://image.tmdb.org/t/p/w185/rzvvBQ0r6oiqDdzcsdTRB7jN4Rx.jpg' }
         ],
-        trailerYoutubeId: 'tOY-UvBomOY',
+        trailerYoutubeId: 'kQDd1AhGIHk',
         teasers: [
-          { title: 'Official Trailer 2 (Release Cut)', dur: '2m 54s • 4K Dolby', tag: 'Theatrical Cut', ytId: 'tOY-UvBomOY' },
+          { title: 'Official Trailer 2 (Telugu Cut)', dur: '2m 54s • 4K Dolby', tag: 'Theatrical Cut', ytId: 'y1-w1kUGuz8' },
           { title: 'Ashwatthama Character Glimpse', dur: '1m 40s • Full HD', tag: 'Character Teaser', ytId: 'FfQo_q199Qo' },
           { title: 'Engineering Bujji: The Real Supercar', dur: '5m 28s • BTS Feature', tag: 'Behind The Scenes', ytId: 'Y9j2q4o7fD8' }
         ],
@@ -310,11 +338,11 @@
           { name: 'Mansoor Ali Khan', role: 'Reddy', characterBadge: 'Veteran Crime Lord', profilePath: 'https://image.tmdb.org/t/p/w185/bXNi9n6Y4dz85xdLnjxquKHleuZ.jpg' },
           { name: 'Hipzster', role: 'Aju', characterBadge: 'Engineering Freshie', profilePath: 'https://image.tmdb.org/t/p/w185/3uynYipF0acOdIz1cthnfabOs1r.jpg' }
         ],
-        trailerYoutubeId: 'OsMqr3556F8',
+        trailerYoutubeId: 'L0yEMl8PXnw',
         teasers: [
-          { title: 'Official Trailer (Malayalam)', dur: '2m 10s • 4K', tag: 'Theatrical Cut', ytId: 'OsMqr3556F8' },
-          { title: 'Jaada Video Song', dur: '3m 22s • Full HD', tag: 'Music Video', ytId: 'OsMqr3556F8' },
-          { title: 'Ranga Entry Sequence BTS', dur: '4m 15s • BTS', tag: 'Behind The Scenes', ytId: 'OsMqr3556F8' }
+          { title: 'Official Trailer (Malayalam)', dur: '2m 10s • 4K', tag: 'Theatrical Cut', ytId: 'L0yEMl8PXnw' },
+          { title: 'Jaada Video Song', dur: '3m 22s • Full HD', tag: 'Music Video', ytId: 'L0yEMl8PXnw' },
+          { title: 'Ranga Entry Sequence BTS', dur: '4m 15s • BTS', tag: 'Behind The Scenes', ytId: 'L0yEMl8PXnw' }
         ],
         streaming: [
           { service: 'Prime Video', code: 'PRM', bg: 'bg-blue-600', specs: 'Malayalam, Tamil, Telugu, Hindi', link: 'https://www.primevideo.com/search/ref=atv_nb_sr?phrase=Aavesham' }
@@ -375,10 +403,10 @@
           { name: 'Balu Varghese', role: 'Sixen', characterBadge: 'Loyal Companion', profilePath: 'https://image.tmdb.org/t/p/w185/v1Ydyfxe3bFxXiHB4cU5Hmoh5hV.jpg' },
           { name: 'Ganapathi', role: 'Sudhi', characterBadge: 'Childhood Friend', profilePath: 'https://image.tmdb.org/t/p/w185/15g6TQroqoLmcK1E8CniGZjm72l.jpg' }
         ],
-        trailerYoutubeId: '9uzfrur9SDU',
+        trailerYoutubeId: 'id848Ww1YLo',
         teasers: [
-          { title: 'Official Trailer (Malayalam)', dur: '2m 18s • 4K', tag: 'Theatrical Cut', ytId: '9uzfrur9SDU' },
-          { title: 'Guna Caves Set Recreation', dur: '4m 30s • BTS', tag: 'Behind The Scenes', ytId: '9uzfrur9SDU' }
+          { title: 'Official Trailer (Malayalam)', dur: '2m 18s • 4K', tag: 'Theatrical Cut', ytId: 'id848Ww1YLo' },
+          { title: 'Guna Caves Set Recreation', dur: '4m 30s • BTS', tag: 'Behind The Scenes', ytId: 'id848Ww1YLo' }
         ],
         streaming: [
           { service: 'Disney+ Hotstar', code: 'HOT', bg: 'bg-blue-800', specs: 'Malayalam, Tamil, Telugu, Hindi, Kannada', link: 'https://www.hotstar.com' }
@@ -439,10 +467,10 @@
           { name: 'Arjun Ashokan', role: 'Thevan', characterBadge: 'Fugitive Paanan Singer', profilePath: 'https://image.tmdb.org/t/p/w185/3uynYipF0acOdIz1cthnfabOs1r.jpg' },
           { name: 'Sidharth Bharathan', role: 'Mana Cook', characterBadge: 'Enslaved Soul', profilePath: 'https://image.tmdb.org/t/p/w185/4a13KELmZuB4NnRlOsdzMfo2K7j.jpg' }
         ],
-        trailerYoutubeId: '7FLxInubR5Q',
+        trailerYoutubeId: '55pzldrBRJM',
         teasers: [
-          { title: 'Official Trailer (Monochrome Cut)', dur: '2m 14s • 4K', tag: 'Theatrical Cut', ytId: '7FLxInubR5Q' },
-          { title: 'Aadithyan Teaser', dur: '1m 20s • Full HD', tag: 'Teaser', ytId: '7FLxInubR5Q' }
+          { title: 'Official Trailer (Monochrome Cut)', dur: '2m 14s • 4K', tag: 'Theatrical Cut', ytId: '55pzldrBRJM' },
+          { title: 'Aadithyan Teaser', dur: '1m 20s • Full HD', tag: 'Teaser', ytId: '55pzldrBRJM' }
         ],
         streaming: [
           { service: 'SonyLIV', code: 'SLIV', bg: 'bg-purple-700', specs: 'Malayalam, Tamil, Telugu, Kannada, Hindi', link: 'https://www.sonyliv.com' }
@@ -500,10 +528,10 @@
           { name: 'Sanjay Dutt', role: 'Antony Das', characterBadge: 'Ruthless Cartel Head', profilePath: 'https://image.tmdb.org/t/p/w185/70viNBvKHpX1kMZcfIwULqWnfdM.jpg' },
           { name: 'Trisha Krishnan', role: 'Sathya', characterBadge: 'Protective Wife', profilePath: 'https://image.tmdb.org/t/p/w185/8YkgaUlTshiDWHymBOEXZ948Yyn.jpg' }
         ],
-        trailerYoutubeId: 'G_AEL-Xo5l8',
+        trailerYoutubeId: 'Po3jStA673E',
         teasers: [
-          { title: 'Official Trailer (Tamil)', dur: '2m 45s • 4K Dolby', tag: 'Theatrical Cut', ytId: 'G_AEL-Xo5l8' },
-          { title: 'Bloody Sweet Promo Glimpse', dur: '2m 48s • 4K', tag: 'Title Promo', ytId: 'G_AEL-Xo5l8' }
+          { title: 'Official Trailer (Tamil)', dur: '2m 45s • 4K Dolby', tag: 'Theatrical Cut', ytId: 'Po3jStA673E' },
+          { title: 'Bloody Sweet Promo Glimpse', dur: '2m 48s • 4K', tag: 'Title Promo', ytId: 'Po3jStA673E' }
         ],
         streaming: [
           { service: 'Netflix', code: 'NFLX', bg: 'bg-[#E50914]', specs: 'Tamil, Telugu, Malayalam, Kannada, Hindi', link: 'https://www.netflix.com' }
@@ -748,9 +776,9 @@
         cast: [
           { name: 'Rishab Shetty', role: 'Shiva & Father', characterBadge: 'Kambala Champion & Daiva Dancer', profilePath: 'https://image.tmdb.org/t/p/w185/eRaOUg2B02XH1l6P4juGzaPDr3u.jpg' }
         ],
-        trailerYoutubeId: '8nr7w0b1Lio',
+        trailerYoutubeId: '8mrVmf239GU',
         teasers: [
-          { title: 'Official Trailer (Kannada/Hindi)', dur: '2m 20s • 4K', tag: 'Theatrical Cut', ytId: '8nr7w0b1Lio' }
+          { title: 'Official Trailer (Kannada/Hindi)', dur: '2m 20s • 4K', tag: 'Theatrical Cut', ytId: '8mrVmf239GU' }
         ],
         streaming: [
           { service: 'Netflix', code: 'NFLX', bg: 'bg-[#E50914]', specs: 'Hindi 4K HDR', link: 'https://www.netflix.com' },
@@ -1050,9 +1078,9 @@
           { name: 'Yash', role: 'Raja Krishnappa Bairya (Rocky)', characterBadge: 'King of Narachi Gold Mines', profilePath: 'https://image.tmdb.org/t/p/w185/es8St0vl9otL1XAAZJKYmNpL3Wy.jpg' },
           { name: 'Sanjay Dutt', role: 'Adheera', characterBadge: 'Viking Mercenary', profilePath: 'https://image.tmdb.org/t/p/w185/70viNBvKHpX1kMZcfIwULqWnfdM.jpg' }
         ],
-        trailerYoutubeId: 'Qah9sSIXJqk',
+        trailerYoutubeId: 'JKa05nyUmuQ',
         teasers: [
-          { title: 'Official Trailer (Release Cut)', dur: '2m 56s • 4K Dolby', tag: 'Theatrical Cut', ytId: 'Qah9sSIXJqk' }
+          { title: 'Official Trailer (Release Cut)', dur: '2m 56s • 4K Dolby', tag: 'Theatrical Cut', ytId: 'JKa05nyUmuQ' }
         ],
         streaming: [
           { service: 'Prime Video', code: 'PRM', bg: 'bg-blue-600', specs: 'Kannada, Hindi, Tamil, Telugu, Malayalam', link: 'https://www.primevideo.com' }
@@ -1110,9 +1138,9 @@
           { name: 'Allu Arjun', role: 'Pushpa Raj', characterBadge: 'Red Sandalwood Kingpin', profilePath: 'https://image.tmdb.org/t/p/w185/T0for90ZpP77Fbz1Tptjn8kqms.jpg' },
           { name: 'Fahadh Faasil', role: 'Bhanwar Singh Shekhawat', characterBadge: 'Vindictive IPS Officer', profilePath: 'https://image.tmdb.org/t/p/w185/wmkwZWFHqMptqdt4HacMIAe8OBP.jpg' }
         ],
-        trailerYoutubeId: 'g3JUbgFBZqE',
+        trailerYoutubeId: 'g3JUbgOHgdw',
         teasers: [
-          { title: 'The Rule Teaser (Jaathara Sequence)', dur: '1m 48s • 4K', tag: 'Special Teaser', ytId: 'g3JUbgFBZqE' }
+          { title: 'The Rule Teaser (Jaathara Sequence)', dur: '1m 48s • 4K', tag: 'Special Teaser', ytId: 'g3JUbgOHgdw' }
         ],
         streaming: [
           { service: 'BookMyShow', code: 'BMS', bg: 'bg-[#F59E0B]', specs: 'Advance Booking Theatres', link: 'https://in.bookmyshow.com', actionText: 'Book Tickets' }
@@ -1170,9 +1198,9 @@
           { name: 'Mohanlal', role: 'Stephen Nedumpally / Khureshi Ab’raam', characterBadge: 'Global Shadow Godfather', profilePath: 'https://image.tmdb.org/t/p/w185/wvoBULQimwguAGPOHZ8TDoy7jBJ.jpg' },
           { name: 'Prithviraj Sukumaran', role: 'Zayed Masood', characterBadge: 'Loyal Commander', profilePath: 'https://image.tmdb.org/t/p/w185/1xhG42QU8tMQRTDdP1Ed3y9GRvm.jpg' }
         ],
-        trailerYoutubeId: '5k8u4r7uV-k',
+        trailerYoutubeId: 'PGqltBCo6cU',
         teasers: [
-          { title: 'Official Launch Promo (4K)', dur: '1m 55s • 4K', tag: 'Title Teaser', ytId: '5k8u4r7uV-k' }
+          { title: 'Official Launch Promo (4K)', dur: '1m 55s • 4K', tag: 'Title Teaser', ytId: 'PGqltBCo6cU' }
         ],
         streaming: [
           { service: 'BookMyShow', code: 'BMS', bg: 'bg-[#F59E0B]', specs: 'Advance Booking Theatres', link: 'https://in.bookmyshow.com', actionText: 'Book Tickets' }
@@ -1230,9 +1258,9 @@
           { name: 'Soubin Shahir', role: 'Dayal', characterBadge: 'Gold Smuggler', profilePath: 'https://image.tmdb.org/t/p/w185/eFMA1PFOpDtiJ5MlkSAMexvTPsl.jpg' },
           { name: 'Nagarjuna Akkineni', role: 'Simon', characterBadge: 'Syndicate Boss', profilePath: 'https://image.tmdb.org/t/p/w185/y6A79KaYhxRZ7OUsDm2dq2MFSm2.jpg' }
         ],
-        trailerYoutubeId: 'qEb_Hk5XpL8',
+        trailerYoutubeId: '6xqNk5Sf5jo',
         teasers: [
-          { title: 'Coolie Title Teaser (4K)', dur: '3m 16s • 4K', tag: 'Title Promo', ytId: 'qEb_Hk5XpL8' }
+          { title: 'Coolie Title Teaser (4K)', dur: '3m 16s • 4K', tag: 'Title Promo', ytId: '6xqNk5Sf5jo' }
         ],
         streaming: [
           { service: 'BookMyShow', code: 'BMS', bg: 'bg-[#F59E0B]', specs: 'Advance Booking Theatres', link: 'https://in.bookmyshow.com', actionText: 'Book Tickets' }
@@ -1317,7 +1345,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/dfNRjtvbxisRSBDhCoUMuEFyY3V.jpg"
                 }
         ],
-        "trailerYoutubeId": "zzvhx5wO7Gg",
+        "trailerYoutubeId": "qbdX6vFbXPw",
         "teasers": [
                 {
                         "title": "Sholay 4K Restored Anniversary Trailer",
@@ -1425,7 +1453,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/d1MdSwIWnTNwk4qSxQ001GqZaaB.jpg"
                 }
         ],
-        "trailerYoutubeId": "7XqOQfO49iQ",
+        "trailerYoutubeId": "D5SSyk_jaSE",
         "teasers": [
                 {
                         "title": "Manichitrathazhu 4K Remastered Teaser",
@@ -1533,7 +1561,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/8oMzQRumoUs5a6iStcK1B3znY1D.jpg"
                 }
         ],
-        "trailerYoutubeId": "j80nUfx-z1o",
+        "trailerYoutubeId": "1S6YkmYvgi8",
         "teasers": [
                 {
                         "title": "Nayakan Official Restored Trailer",
@@ -1865,7 +1893,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/t6niRFC3xCV6hJSuyC9ACWLSVXu.jpg"
                 }
         ],
-        "trailerYoutubeId": "3GZl-8tq_9s",
+        "trailerYoutubeId": "wA30CKor18A",
         "teasers": [
                 {
                         "title": "Thalapathi 4K Digitally Restored Trailer",
@@ -2088,7 +2116,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/cfyRkFBFfodBbNKbsTc8eG9YtVj.jpg"
                 }
         ],
-        "trailerYoutubeId": "KVn5m511SVs",
+        "trailerYoutubeId": "VlvOgk5BHS4",
         "teasers": [
                 {
                         "title": "Stree 2 Official Theatrical Trailer",
@@ -2196,7 +2224,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/dJvFZOXmZdkYCOUcKTXQAhBcAoH.jpg"
                 }
         ],
-        "trailerYoutubeId": "pG8P1N9zS8c",
+        "trailerYoutubeId": "5cx7rvMvAWo",
         "teasers": [
                 {
                         "title": "Devara Official Theatrical Release Trailer",
@@ -2304,7 +2332,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/9ynw91mnpUAIlHu71W70LiAPZQZ.jpg"
                 }
         ],
-        "trailerYoutubeId": "jnum_sW6Gfs",
+        "trailerYoutubeId": "B5GAjuSnNuQ",
         "teasers": [
                 {
                         "title": "GOAT Official Theatrical Trailer (Tamil)",
@@ -2411,7 +2439,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/2f7mTmZ1RttbacuADm6vv7xpTAi.jpg"
                 }
         ],
-        "trailerYoutubeId": "yR07fJ0C02s",
+        "trailerYoutubeId": "rR_2ti4l3nM",
         "teasers": [
                 {
                         "title": "Premalu Official Malayalam Trailer",
@@ -2519,7 +2547,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/lj16BGfdqygHF8PZVt2KO8GUXn1.jpg"
                 }
         ],
-        "trailerYoutubeId": "Dydmpfo68DA",
+        "trailerYoutubeId": "8FkLRUJj-o0",
         "teasers": [
                 {
                         "title": "Animal Official Theatrical Trailer (Hindi)",
@@ -2621,7 +2649,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/zO1MoCgaz0RxILjga8VYXguROMp.jpg"
                 }
         ],
-        "trailerYoutubeId": "6X_P8e9FjFk",
+        "trailerYoutubeId": "Frp0zC4643U",
         "teasers": [
                 {
                         "title": "Kantara Chapter 1 First Look Teaser",
@@ -2729,7 +2757,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/aTLJCkl6mBXnb5ekKQytd7zTfne.jpg"
                 }
         ],
-        "trailerYoutubeId": "qQjH-o3XfW0",
+        "trailerYoutubeId": "OXe7N7-xMKM",
         "teasers": [
                 {
                         "title": "Game Changer Official Teaser (4K)",
@@ -2831,7 +2859,7 @@
                         "profilePath": "https://image.tmdb.org/t/p/w185/sYUzvjsSsqeOgBblSzda6ZwwbEa.jpg"
                 }
         ],
-        "trailerYoutubeId": "V9PcfE44r-o",
+        "trailerYoutubeId": "Nm2zM-YdqO0",
         "teasers": [
                 {
                         "title": "Toxic Title Announcement Video (4K)",
@@ -3316,28 +3344,18 @@
         <div className="min-h-screen bg-[#080808] text-white selection:bg-[#F59E0B] selection:text-black">
           
           {/* HEADER / NAVIGATION BAR */}
-          <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0e]/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300">
+          <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0e]/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300 pt-safe">
             
-            {/* MOBILE PWA NATIVE SYSTEM BAR (Stitch: 9:41, Online/Offline sync, Battery/Signal) */}
-            <div className="sm:hidden px-4 pt-1.5 pb-0.5 flex items-center justify-between text-gray-400 font-label-meta text-[11px] font-mono border-b border-white/5">
-              <div className="flex items-center gap-1.5 font-bold tracking-tight text-white">
-                <span>9:41</span>
-                <span className={`w-1.5 h-1.5 rounded-full inline-block ${isSimulatedOffline || !isOnline ? 'bg-red-500' : 'bg-primary-container animate-pulse'}`}></span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-primary flex items-center gap-1">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isSimulatedOffline || !isOnline ? 'bg-red-500' : 'bg-primary-container animate-ping'}`}></span>
-                  <span className="text-[9px] tracking-wide uppercase font-bold">
-                    {isSimulatedOffline || !isOnline ? 'Offline • Cached Vault' : 'Online • PWA Sync Active'}
-                  </span>
-                </span>
-                <div className="flex items-center gap-1 text-[12px] text-gray-400">
-                  <span className="material-symbols-outlined text-[13px]">signal_cellular_alt</span>
-                  <span className="material-symbols-outlined text-[13px]">wifi</span>
-                  <span className="material-symbols-outlined text-[15px]">battery_full</span>
+            {/* Offline Alert Bar (Visible only when offline) */}
+            {(isSimulatedOffline || !isOnline) && (
+              <div className="sm:hidden px-4 py-1.5 bg-amber-500/20 border-b border-amber-500/30 flex items-center justify-between text-xs text-amber-300">
+                <div className="flex items-center gap-1.5 font-mono">
+                  <span className="material-symbols-outlined text-[16px]">cloud_off</span>
+                  <span>Offline Vault • Cached Media Ready</span>
                 </div>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-500/30">Cached</span>
               </div>
-            </div>
+            )}
 
             {/* MOBILE TOP BAR (Stitch: Logo, PWA Badge, Actions) */}
             <div className="sm:hidden h-14 px-4 flex items-center justify-between gap-2">
@@ -3678,7 +3696,7 @@
                 {/* ----------------------------------------------------------------- */}
                 {/* STITCH MOBILE HOME EXPERIENCE (sm:hidden)                          */}
                 {/* ----------------------------------------------------------------- */}
-                <div className="sm:hidden pt-20 pb-2">
+                <div className="sm:hidden pt-[calc(env(safe-area-inset-top,0px)+4.25rem)] pb-4">
                   
                   {/* Smart PWA Installation Card (Dismissible - Hidden if Installed) */}
                   {!isAppInstalled && !isSmartInstallDismissed && (
@@ -3720,7 +3738,7 @@
                     <div className="relative w-full rounded-2xl overflow-hidden bg-surface-container-lowest shadow-2xl aspect-[4/5] max-h-[480px] flex flex-col justify-end p-4 border border-white/5">
                       <div 
                         className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700 cursor-pointer" 
-                        style={{ backgroundImage: `url(${currentHero.posterUrl || currentHero.backdropUrl})` }}
+                        style={{ backgroundImage: `url(${currentHero.backdropUrl || currentHero.posterUrl})` }}
                         onClick={() => handleOpenDetails(currentHero)}
                       >
                         <div className="absolute inset-0 bg-gradient-to-t from-[#131313] via-[#131313]/60 to-transparent"></div>
@@ -4488,7 +4506,7 @@
             const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(trailerMovie.title + ' ' + (trailerMovie.year || '') + ' official trailer 4k')}`;
 
             return (
-              <div className="fixed inset-0 z-50 bg-black/92 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-fadeIn">
+              <div className="fixed inset-0 z-50 bg-black/92 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 pt-safe pb-safe overflow-y-auto animate-fadeIn">
                 <div className="relative w-full max-w-5xl bg-[#121216] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-4 sm:p-6">
                   
                   {/* Modal Header */}
@@ -4510,14 +4528,33 @@
 
                   {/* Main Player or Dummy Video Banner */}
                   {hasValidTrailer ? (
-                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
-                      <iframe
-                        src={`https://www.youtube-nocookie.com/embed/${trailerMovie.trailerYoutubeId}?autoplay=1&rel=0&modestbranding=1`}
-                        title={`${trailerMovie.title} Official Trailer`}
-                        className="w-full h-full border-0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                      />
+                    <div className="space-y-3">
+                      <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${trailerMovie.trailerYoutubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1`}
+                          title={`${trailerMovie.title} Official Trailer`}
+                          className="w-full h-full border-0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      </div>
+                      
+                      {/* iOS Native App / Fullscreen Shortcut Bar */}
+                      <div className="flex items-center justify-between gap-2 px-1">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-400 font-mono">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                          <span>Official 4K Theatrical Release</span>
+                        </div>
+                        <a
+                          href={`https://www.youtube.com/watch?v=${trailerMovie.trailerYoutubeId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3.5 py-1.5 rounded-xl bg-red-600/90 hover:bg-red-600 text-white font-display text-xs font-bold flex items-center gap-1.5 shadow-md transition-all active:scale-95"
+                        >
+                          <span>▶</span>
+                          <span>Open in YouTube App ↗</span>
+                        </a>
+                      </div>
                     </div>
                   ) : (
                     /* ========================================================================= */
@@ -4580,7 +4617,7 @@
                         </a>
 
                         <button
-                          onClick={() => setTrailerMovie({ ...trailerMovie, trailerYoutubeId: 'tOY-UvBomOY' })}
+                          onClick={() => setTrailerMovie({ ...trailerMovie, trailerYoutubeId: 'kQDd1AhGIHk' })}
                           className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all hover:border-amber-400"
                         >
                           <span className="text-amber-400">⚡</span>
