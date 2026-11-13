@@ -2,9 +2,38 @@
 <html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>CineVerse – Indian Cinema Elite</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+  
+  <!-- Progressive Web App (PWA) Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#080808">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="CineVerse">
+  
+  <!-- Apple iOS Native PWA Settings -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CineVerse">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
+  
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('[CineVerse PWA] Service Worker active:', reg.scope))
+          .catch((err) => console.warn('[CineVerse PWA] Service Worker registration skipped:', err));
+      });
+    }
+  </script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -42,11 +71,26 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+    }
     body {
       background-color: #080808;
       color: #ffffff;
       font-family: 'Outfit', sans-serif;
       overflow-x: hidden;
+      padding-top: env(safe-area-inset-top, 0px);
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    /* Native smooth bottom bar clearance for mobile */
+    @media (max-width: 640px) {
+      body {
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
+      }
     }
     .font-display {
       font-family: 'Syne', sans-serif;
@@ -2798,6 +2842,74 @@
       const [isSearchingTmdb, setIsSearchingTmdb] = useState(false);
       const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
+      // =========================================================================
+      // PWA & NATIVE MOBILE APP STATE
+      // =========================================================================
+      const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
+      const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
+      const [isAppInstalled, setIsAppInstalled] = useState(false);
+      const [isOnline, setIsOnline] = useState(navigator.onLine);
+      const [onlineToast, setOnlineToast] = useState(false);
+
+      const triggerHaptic = (pattern = 15) => {
+        if ('vibrate' in navigator) {
+          try { navigator.vibrate(pattern); } catch (e) {}
+        }
+      };
+
+      useEffect(() => {
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+          setIsAppInstalled(true);
+        }
+
+        const handleBeforeInstall = (e) => {
+          e.preventDefault();
+          setDeferredInstallPrompt(e);
+        };
+
+        const handleAppInstalled = () => {
+          setIsAppInstalled(true);
+          setDeferredInstallPrompt(null);
+          setIsInstallModalOpen(false);
+        };
+
+        window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+        window.addEventListener('appinstalled', handleAppInstalled);
+
+        const handleOnline = () => {
+          setIsOnline(true);
+          setOnlineToast(true);
+          setTimeout(() => setOnlineToast(false), 3500);
+        };
+        const handleOffline = () => {
+          setIsOnline(false);
+        };
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+          window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+          window.removeEventListener('appinstalled', handleAppInstalled);
+          window.removeEventListener('online', handleOnline);
+          window.removeEventListener('offline', handleOffline);
+        };
+      }, []);
+
+      const handleTriggerInstall = async () => {
+        triggerHaptic(20);
+        if (deferredInstallPrompt) {
+          deferredInstallPrompt.prompt();
+          const { outcome } = await deferredInstallPrompt.userChoice;
+          if (outcome === 'accepted') {
+            setIsAppInstalled(true);
+          }
+          setDeferredInstallPrompt(null);
+        } else {
+          setIsInstallModalOpen(true);
+        }
+      };
+
       const heroFeatured = useMemo(() => moviesList.slice(0, 4), [moviesList]);
       const currentHero = heroFeatured[heroIndex] || heroFeatured[0];
 
@@ -3229,6 +3341,18 @@
 
               {/* Right Action Icons */}
               <div className="flex items-center gap-2 sm:gap-3">
+                
+                {/* PWA Install Button for Desktop / Tablet */}
+                {!isAppInstalled && (
+                  <button
+                    onClick={handleTriggerInstall}
+                    className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold hover:scale-105 active:scale-95 transition-all shadow-md shadow-amber-500/10"
+                    title="Install CineVerse Native App"
+                  >
+                    <span className="material-symbols-outlined text-[16px] text-amber-400">install_mobile</span>
+                    <span>Install App</span>
+                  </button>
+                )}
                 
                 {/* Language Dropdown Selector */}
                 <div className="relative">
@@ -4027,6 +4151,173 @@
             </div>
           )}
 
+          {/* ========================================================================= */}
+          {/* OFFLINE / ONLINE STATUS TOAST NOTIFICATION                                 */}
+          {/* ========================================================================= */}
+          {!isOnline && (
+            <div className="fixed top-18 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-amber-500/95 text-black text-xs font-bold shadow-2xl backdrop-blur-md flex items-center gap-2 border border-black/20 animate-bounce">
+              <span>⚡</span>
+              <span>Offline Mode: 32+ Handcrafted Masterpieces Ready</span>
+            </div>
+          )}
+
+          {onlineToast && (
+            <div className="fixed top-18 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-emerald-500/95 text-black text-xs font-bold shadow-2xl backdrop-blur-md flex items-center gap-2 border border-black/20">
+              <span className="material-symbols-outlined text-[16px]">wifi</span>
+              <span>Back Online: Live Releases Synchronized!</span>
+            </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* NATIVE PWA INSTALL MODAL (iOS SAFARI & ANDROID / DESKTOP INSTRUCTIONS)      */}
+          {/* ========================================================================= */}
+          {isInstallModalOpen && (
+            <div 
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
+              onClick={() => setIsInstallModalOpen(false)}
+            >
+              <div 
+                className="w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl bg-[#141418] border border-white/15 p-6 space-y-5 text-white shadow-2xl pb-[calc(env(safe-area-inset-bottom)+1.5rem)] sm:pb-6"
+                onClick={e => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 p-0.5 shadow-lg shadow-amber-500/20">
+                      <div className="w-full h-full rounded-[14px] bg-[#080808] flex items-center justify-center text-xl">
+                        🎬
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display font-black text-lg text-white">Install CineVerse</h3>
+                      <p className="text-xs text-amber-400 font-medium">Standalone Native App Experience</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIsInstallModalOpen(false)}
+                    className="p-1 rounded-full text-gray-400 hover:text-white"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">close</span>
+                  </button>
+                </div>
+
+                {/* Features List */}
+                <div className="space-y-2 py-1 text-xs text-gray-300">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-400">✓</span>
+                    <span>Full-screen cinematic view with no browser URL bar</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-400">✓</span>
+                    <span>100% Offline playback for 32+ Indian blockbusters</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-400">✓</span>
+                    <span>One-tap instant launch from your Home Screen</span>
+                  </div>
+                </div>
+
+                {/* Platform-Specific Installation Steps */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-bold text-amber-300 uppercase tracking-wider font-mono">
+                    <span className="material-symbols-outlined text-[16px]">phone_iphone</span>
+                    <span>iPhone & iPad (Safari)</span>
+                  </div>
+                  <ol className="space-y-2 text-xs text-gray-300">
+                    <li className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">1</span>
+                      <span>Tap the <strong>Share</strong> button <span className="text-blue-400 font-bold">[ ↑ ]</span> in Safari's bottom toolbar.</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">2</span>
+                      <span>Scroll down and tap <strong>"Add to Home Screen"</strong> <span className="text-amber-400 font-bold">[ ➕ ]</span>.</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">3</span>
+                      <span>Tap <strong>"Add"</strong> at the top-right to install.</span>
+                    </li>
+                  </ol>
+                </div>
+
+                {/* Android / Chrome Direct Action Button */}
+                {deferredInstallPrompt ? (
+                  <button
+                    onClick={handleTriggerInstall}
+                    className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-display font-black text-sm uppercase tracking-wider shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">download</span>
+                    <span>Install CineVerse Now</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setIsInstallModalOpen(false)}
+                    className="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider transition-colors"
+                  >
+                    Got It
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* NATIVE MOBILE FLOATING BOTTOM APP BAR (MOBILE DOCK)                       */}
+          {/* ========================================================================= */}
+          <nav 
+            className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0c0c10]/95 backdrop-blur-2xl border-t border-white/10 px-2 py-2 pb-[calc(env(safe-area-inset-bottom)+0.4rem)] flex items-center justify-around text-[10px] font-semibold text-gray-400 shadow-2xl"
+            style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.45rem)' }}
+          >
+            <button 
+              onClick={() => { triggerHaptic(15); handleBackToCatalog(); }} 
+              className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl transition-all ${!viewingMovie ? 'text-[#F59E0B] font-bold scale-105' : 'hover:text-white'}`}
+            >
+              <span className="material-symbols-outlined text-[20px]">home</span>
+              <span>Home</span>
+            </button>
+            
+            <button 
+              onClick={() => { triggerHaptic(15); setIsSearchOpen(true); }} 
+              className="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl hover:text-white transition-all"
+            >
+              <span className="material-symbols-outlined text-[20px]">search</span>
+              <span>Search</span>
+            </button>
+            
+            <button 
+              onClick={() => { triggerHaptic(15); setIsWatchlistOpen(true); }} 
+              className="relative flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl hover:text-white transition-all"
+            >
+              <span className="material-symbols-outlined text-[20px]">bookmark</span>
+              <span>Watchlist</span>
+              {watchlist.length > 0 && (
+                <span className="absolute top-0.5 right-2 w-4 h-4 rounded-full bg-red-600 text-white font-mono text-[9px] flex items-center justify-center font-bold">
+                  {watchlist.length}
+                </span>
+              )}
+            </button>
+
+            <button 
+              onClick={() => { 
+                triggerHaptic(15); 
+                handleBackToCatalog(); 
+                setSelectedEra(selectedEra === 'Classic' ? 'All' : 'Classic');
+                setTimeout(() => document.getElementById('classics-section')?.scrollIntoView({ behavior: 'smooth' }), 50);
+              }} 
+              className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl transition-all ${selectedEra === 'Classic' ? 'text-[#F59E0B] font-bold scale-105' : 'hover:text-white'}`}
+            >
+              <span className="material-symbols-outlined text-[20px]">history_edu</span>
+              <span>Classics</span>
+            </button>
+
+            <button 
+              onClick={() => { triggerHaptic(20); handleTriggerInstall(); }} 
+              className="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl text-amber-400 hover:text-amber-300 transition-all font-bold"
+            >
+              <span className="material-symbols-outlined text-[20px] text-amber-400">install_mobile</span>
+              <span>Install</span>
+            </button>
+          </nav>
+
         </div>
       );
     }
@@ -4082,7 +4373,22 @@
         return unique;
       }, [movie.id, movie.language, movie.genres, allMovies]);
 
-      const handleShare = () => {
+      const handleShare = async () => {
+        if ('vibrate' in navigator) {
+          try { navigator.vibrate(20); } catch (e) {}
+        }
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: `${movie.title} (${movie.year})`,
+              text: `${movie.title} – ${movie.tagline}. Stream and explore on CineVerse!`,
+              url: window.location.href
+            });
+            return;
+          } catch (e) {
+            // Dismissed by user
+          }
+        }
         setCopied(true);
         navigator.clipboard?.writeText?.(window.location.href);
         setTimeout(() => setCopied(false), 2000);
