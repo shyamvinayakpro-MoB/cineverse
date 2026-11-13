@@ -2838,8 +2838,20 @@
       const [isWatchlistOpen, setIsWatchlistOpen] = useState(false);
       const [watchlist, setWatchlist] = useState(() => {
         try {
-          const saved = localStorage.getItem('cineverse_user_watchlist');
-          return saved ? JSON.parse(saved) : [];
+          // Immediately purge old legacy seeds
+          localStorage.removeItem('cineverse_user_watchlist');
+          localStorage.removeItem('cineverse_watchlist');
+          const saved = localStorage.getItem('cineverse_custom_watchlist_v4');
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            // If it matches the old static 3 movies, discard it
+            if (Array.isArray(parsed) && parsed.length === 3 && parsed.includes('kalki-2898-ad')) {
+              localStorage.removeItem('cineverse_custom_watchlist_v4');
+              return [];
+            }
+            return Array.isArray(parsed) ? parsed : [];
+          }
+          return [];
         } catch (e) {
           return [];
         }
@@ -2848,7 +2860,7 @@
       // Synchronize watchlist updates to localStorage
       useEffect(() => {
         try {
-          localStorage.setItem('cineverse_user_watchlist', JSON.stringify(watchlist));
+          localStorage.setItem('cineverse_custom_watchlist_v4', JSON.stringify(watchlist));
         } catch (e) {}
       }, [watchlist]);
       const [searchQuery, setSearchQuery] = useState('');
@@ -2861,7 +2873,19 @@
       // =========================================================================
       const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null);
       const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
-      const [isAppInstalled, setIsAppInstalled] = useState(false);
+      const [isAppInstalled, setIsAppInstalled] = useState(() => {
+        try {
+          if (typeof window !== 'undefined') {
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+              return true;
+            }
+            if (localStorage.getItem('cineverse_pwa_installed') === 'true') {
+              return true;
+            }
+          }
+        } catch (e) {}
+        return false;
+      });
       const [isOnline, setIsOnline] = useState(navigator.onLine);
       const [onlineToast, setOnlineToast] = useState(false);
 
@@ -2872,9 +2896,12 @@
       };
 
       useEffect(() => {
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-          setIsAppInstalled(true);
-        }
+        const checkStandalone = () => {
+          if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || localStorage.getItem('cineverse_pwa_installed') === 'true') {
+            setIsAppInstalled(true);
+          }
+        };
+        checkStandalone();
 
         const handleBeforeInstall = (e) => {
           e.preventDefault();
@@ -2883,6 +2910,7 @@
 
         const handleAppInstalled = () => {
           setIsAppInstalled(true);
+          try { localStorage.setItem('cineverse_pwa_installed', 'true'); } catch (e) {}
           setDeferredInstallPrompt(null);
           setIsInstallModalOpen(false);
         };
@@ -3357,7 +3385,7 @@
               <div className="flex items-center gap-2 sm:gap-3">
                 
                 {/* PWA Install Button for Desktop / Tablet */}
-                {!isAppInstalled && (
+                {!isAppInstalled ? (
                   <button
                     onClick={handleTriggerInstall}
                     className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold hover:scale-105 active:scale-95 transition-all shadow-md shadow-amber-500/10"
@@ -3366,6 +3394,15 @@
                     <span className="material-symbols-outlined text-[16px] text-amber-400">install_mobile</span>
                     <span>Install App</span>
                   </button>
+                ) : (
+                  <div
+                    onClick={() => setIsInstallModalOpen(true)}
+                    className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-bold shadow-sm cursor-pointer hover:bg-emerald-500/25 transition-colors"
+                    title="CineVerse App is Installed"
+                  >
+                    <span className="material-symbols-outlined text-[16px] text-emerald-400">check_circle</span>
+                    <span>App Already Installed</span>
+                  </div>
                 )}
                 
                 {/* Language Dropdown Selector */}
@@ -4289,14 +4326,18 @@
                 {/* Modal Header */}
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 p-0.5 shadow-lg shadow-amber-500/20">
+                    <div className={`w-12 h-12 rounded-2xl p-0.5 shadow-lg ${isAppInstalled ? 'bg-gradient-to-br from-emerald-500 to-teal-600 shadow-emerald-500/20' : 'bg-gradient-to-br from-amber-500 to-orange-600 shadow-amber-500/20'}`}>
                       <div className="w-full h-full rounded-[14px] bg-[#080808] flex items-center justify-center text-xl">
-                        🎬
+                        {isAppInstalled ? '✓' : '🎬'}
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-display font-black text-lg text-white">Install CineVerse</h3>
-                      <p className="text-xs text-amber-400 font-medium">Standalone Native App Experience</p>
+                      <h3 className="font-display font-black text-lg text-white">
+                        {isAppInstalled ? 'App Already Installed' : 'Install CineVerse'}
+                      </h3>
+                      <p className={`text-xs font-medium ${isAppInstalled ? 'text-emerald-400' : 'text-amber-400'}`}>
+                        {isAppInstalled ? 'Native Standalone App Active' : 'Standalone Native App Experience'}
+                      </p>
                     </div>
                   </div>
                   <button 
@@ -4307,60 +4348,106 @@
                   </button>
                 </div>
 
-                {/* Features List */}
-                <div className="space-y-2 py-1 text-xs text-gray-300">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-emerald-400">✓</span>
-                    <span>Full-screen cinematic view with no browser URL bar</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-emerald-400">✓</span>
-                    <span>100% Offline playback for 32+ Indian blockbusters</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-emerald-400">✓</span>
-                    <span>One-tap instant launch from your Home Screen</span>
-                  </div>
-                </div>
+                {isAppInstalled ? (
+                  /* ========================================================================= */
+                  /* ALREADY INSTALLED VIEW                                                    */
+                  /* ========================================================================= */
+                  <div className="space-y-4 py-2">
+                    <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 space-y-2 text-xs text-emerald-200">
+                      <div className="flex items-center gap-2 text-white font-bold text-sm">
+                        <span className="material-symbols-outlined text-emerald-400 text-[18px]">verified</span>
+                        <span>CineVerse is Ready on Your Device</span>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed">
+                        The CineVerse progressive web app is installed and running in standalone mode. You have full access to:
+                      </p>
+                      <ul className="space-y-1 text-gray-300 pl-1 pt-1">
+                        <li>• 100% full-screen view with zero browser address bars</li>
+                        <li>• Offline browsing of all 32+ curated Indian masterpieces</li>
+                        <li>• Instant home screen access and smooth touch haptics</li>
+                      </ul>
+                    </div>
 
-                {/* Platform-Specific Installation Steps */}
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-bold text-amber-300 uppercase tracking-wider font-mono">
-                    <span className="material-symbols-outlined text-[16px]">phone_iphone</span>
-                    <span>iPhone & iPad (Safari)</span>
+                    <button
+                      onClick={() => setIsInstallModalOpen(false)}
+                      className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-display font-black text-sm uppercase tracking-wider shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    >
+                      Done
+                    </button>
                   </div>
-                  <ol className="space-y-2 text-xs text-gray-300">
-                    <li className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">1</span>
-                      <span>Tap the <strong>Share</strong> button <span className="text-blue-400 font-bold">[ ↑ ]</span> in Safari's bottom toolbar.</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">2</span>
-                      <span>Scroll down and tap <strong>"Add to Home Screen"</strong> <span className="text-amber-400 font-bold">[ ➕ ]</span>.</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">3</span>
-                      <span>Tap <strong>"Add"</strong> at the top-right to install.</span>
-                    </li>
-                  </ol>
-                </div>
-
-                {/* Android / Chrome Direct Action Button */}
-                {deferredInstallPrompt ? (
-                  <button
-                    onClick={handleTriggerInstall}
-                    className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-display font-black text-sm uppercase tracking-wider shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">download</span>
-                    <span>Install CineVerse Now</span>
-                  </button>
                 ) : (
-                  <button
-                    onClick={() => setIsInstallModalOpen(false)}
-                    className="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider transition-colors"
-                  >
-                    Got It
-                  </button>
+                  /* ========================================================================= */
+                  /* INSTALLATION INSTRUCTIONS & ACTIONS                                       */
+                  /* ========================================================================= */
+                  <div className="space-y-4">
+                    {/* Features List */}
+                    <div className="space-y-2 py-1 text-xs text-gray-300">
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-emerald-400">✓</span>
+                        <span>Full-screen cinematic view with no browser URL bar</span>
+                      </div>
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-emerald-400">✓</span>
+                        <span>100% Offline playback for 32+ Indian blockbusters</span>
+                      </div>
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-emerald-400">✓</span>
+                        <span>One-tap instant launch from your Home Screen</span>
+                      </div>
+                    </div>
+
+                    {/* Platform-Specific Installation Steps */}
+                    <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                      <div className="flex items-center gap-2 text-xs font-bold text-amber-300 uppercase tracking-wider font-mono">
+                        <span className="material-symbols-outlined text-[16px]">phone_iphone</span>
+                        <span>iPhone & iPad (Safari)</span>
+                      </div>
+                      <ol className="space-y-2 text-xs text-gray-300">
+                        <li className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">1</span>
+                          <span>Tap the <strong>Share</strong> button <span className="text-blue-400 font-bold">[ ↑ ]</span> in Safari's bottom toolbar.</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">2</span>
+                          <span>Scroll down and tap <strong>"Add to Home Screen"</strong> <span className="text-amber-400 font-bold">[ ➕ ]</span>.</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-[10px]">3</span>
+                          <span>Tap <strong>"Add"</strong> at the top-right to install.</span>
+                        </li>
+                      </ol>
+                    </div>
+
+                    {/* Android / Chrome Direct Action Button */}
+                    {deferredInstallPrompt ? (
+                      <button
+                        onClick={handleTriggerInstall}
+                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-display font-black text-sm uppercase tracking-wider shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">download</span>
+                        <span>Install CineVerse Now</span>
+                      </button>
+                    ) : (
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => setIsInstallModalOpen(false)}
+                          className="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider transition-colors"
+                        >
+                          Got It
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsAppInstalled(true);
+                            try { localStorage.setItem('cineverse_pwa_installed', 'true'); } catch (e) {}
+                            setIsInstallModalOpen(false);
+                          }}
+                          className="w-full text-center text-[11px] text-gray-400 hover:text-emerald-400 transition-colors py-1 block"
+                        >
+                          Already added to Home Screen? Tap here to mark Installed ✓
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -4415,13 +4502,25 @@
               <span>Classics</span>
             </button>
 
-            <button 
-              onClick={() => { triggerHaptic(20); handleTriggerInstall(); }} 
-              className="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl text-amber-400 hover:text-amber-300 transition-all font-bold"
-            >
-              <span className="material-symbols-outlined text-[20px] text-amber-400">install_mobile</span>
-              <span>Install</span>
-            </button>
+            {!isAppInstalled ? (
+              <button 
+                onClick={() => { triggerHaptic(20); handleTriggerInstall(); }} 
+                className="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl text-amber-400 hover:text-amber-300 transition-all font-bold"
+                title="Install CineVerse App"
+              >
+                <span className="material-symbols-outlined text-[20px] text-amber-400">install_mobile</span>
+                <span>Install</span>
+              </button>
+            ) : (
+              <button 
+                onClick={() => { triggerHaptic(15); setIsInstallModalOpen(true); }} 
+                className="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-emerald-400 hover:text-emerald-300 transition-all font-bold"
+                title="App Already Installed"
+              >
+                <span className="material-symbols-outlined text-[20px] text-emerald-400">check_circle</span>
+                <span>Installed</span>
+              </button>
+            )}
           </nav>
 
         </div>
