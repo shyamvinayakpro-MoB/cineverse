@@ -2836,7 +2836,21 @@
       const [trailerMovie, setTrailerMovie] = useState(null);
       const [isSearchOpen, setIsSearchOpen] = useState(false);
       const [isWatchlistOpen, setIsWatchlistOpen] = useState(false);
-      const [watchlist, setWatchlist] = useState(['kalki-2898-ad', 'aavesham', 'manjummel-boys']);
+      const [watchlist, setWatchlist] = useState(() => {
+        try {
+          const saved = localStorage.getItem('cineverse_user_watchlist');
+          return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+          return [];
+        }
+      });
+
+      // Synchronize watchlist updates to localStorage
+      useEffect(() => {
+        try {
+          localStorage.setItem('cineverse_user_watchlist', JSON.stringify(watchlist));
+        } catch (e) {}
+      }, [watchlist]);
       const [searchQuery, setSearchQuery] = useState('');
       const [liveTmdbResults, setLiveTmdbResults] = useState([]);
       const [isSearchingTmdb, setIsSearchingTmdb] = useState(false);
