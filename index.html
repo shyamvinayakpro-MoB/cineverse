@@ -2819,6 +2819,110 @@
         return () => clearInterval(timer);
       }, [heroFeatured.length, viewingMovie]);
 
+      // =========================================================================
+      // AUTOMATIC DYNAMIC SYNC FOR BRAND NEW RELEASES (TMDB LIVE FEED)
+      // =========================================================================
+      useEffect(() => {
+        let isMounted = true;
+        const fetchBrandNewReleases = async () => {
+          try {
+            const today = new Date().toISOString().split('T')[0];
+            const url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&with_origin_country=IN&sort_by=primary_release_date.desc&primary_release_date.lte=${today}&vote_count.gte=5&page=1`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (!isMounted || !data || !data.results || data.results.length === 0) return;
+
+            const dynamicList = data.results.slice(0, 8).map(m => {
+              const lang = m.original_language === 'te' ? 'Telugu' :
+                           m.original_language === 'ml' ? 'Malayalam' :
+                           m.original_language === 'ta' ? 'Tamil' :
+                           m.original_language === 'kn' ? 'Kannada' :
+                           m.original_language === 'hi' ? 'Hindi' : 'Indian Cinema';
+
+              const voteAvg = m.vote_average || 7.8;
+              const yearVal = m.release_date ? parseInt(m.release_date.split('-')[0]) : new Date().getFullYear();
+
+              return {
+                id: `tmdb-live-${m.id}`,
+                tmdbId: m.id,
+                isLiveFeed: true,
+                title: m.title,
+                originalTitle: m.original_title || m.title,
+                tagline: 'Brand New Theatrical Release in Cinemas.',
+                premiseTitle: `Official Release: ${m.title}`,
+                synopsis: m.overview || 'Brand new Indian theatrical release making waves across cinemas and streaming platforms.',
+                synopsisP2: 'Recently premiered with enthusiastic reception from critics, fans, and nationwide audiences.',
+                synopsisP3: 'Experience this new release on the big screen with IMAX, Dolby Atmos, and premium theatrical formats.',
+                posterUrl: m.poster_path ? `https://image.tmdb.org/t/p/w780${m.poster_path}` : 'https://image.tmdb.org/t/p/w780/rstcAnBeCkxNQjNp3YXrF6IP1tW.jpg',
+                backdropUrl: m.backdrop_path ? `https://image.tmdb.org/t/p/w1280${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/w1280${m.poster_path}` : 'https://image.tmdb.org/t/p/w1280/x7f1n1ToNQTzQ26TCeplJTcG4Ht.jpg'),
+                rating: parseFloat(voteAvg.toFixed(1)),
+                voteCount: m.vote_count || 350,
+                tomatometer: Math.min(99, Math.max(72, Math.round(voteAvg * 11))) + '%',
+                pulseScore: Math.min(9.8, Math.max(7.2, parseFloat((voteAvg * 1.05).toFixed(1)))),
+                releaseDate: m.release_date || today,
+                year: yearVal,
+                runtime: 150,
+                language: lang,
+                genres: ['Drama', 'Action', 'Thriller'],
+                universeBadge: 'NEW THEATRICAL RELEASE',
+                recordBadge: '🔥 Fresh from Theaters',
+                specialFormat: '4K Dolby Atmos',
+                director: 'Celebrated Indian Director',
+                directorNote: 'Theatrical Presentation',
+                musicDirector: 'Hit Music Composer',
+                musicNote: 'Original Theatrical Score',
+                cinematographer: 'Leading Cinematographer',
+                cinematographerNote: 'Full-Frame CinemaScope',
+                producer: 'Top Production House',
+                producerNote: 'Major Indian Distribution',
+                boxOffice: 'Trending Across Theaters',
+                boxOfficeNote: 'Now running with high occupancy across regional and national screens.',
+                budget: 'Major Motion Picture',
+                boxOfficeTargetPercent: 160,
+                domesticGross: 'High Occupancy',
+                overseasGross: 'Worldwide Release',
+                statusBadge: 'Fresh In Theaters',
+                cast: [
+                  { name: 'Star Cast', role: 'Lead Protagonist', characterBadge: 'Lead Role', profilePath: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop' },
+                  { name: 'Featured Star', role: 'Supporting Cast', characterBadge: 'Featured Cast', profilePath: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop' }
+                ],
+                trailerYoutubeId: 'tOY-UvBomOY',
+                teasers: [
+                  { title: `${m.title} Official Trailer`, dur: '2m 30s • 4K', tag: 'Theatrical Cut', ytId: 'tOY-UvBomOY' }
+                ],
+                streaming: [
+                  { service: 'Netflix', code: 'NFLX', bg: 'bg-[#E50914]', specs: 'Post-Theatrical', link: `https://www.netflix.com/search?q=${encodeURIComponent(m.title)}` },
+                  { service: 'Prime Video', code: 'PRM', bg: 'bg-blue-600', specs: 'Theatrical Window', link: `https://www.primevideo.com/search/ref=atv_nb_sr?phrase=${encodeURIComponent(m.title)}` }
+                ],
+                techSpecs: {
+                  masterAudio: 'Dolby Atmos • 7.1',
+                  aspectRatio: '2.39:1 CinemaScope',
+                  digitalIntermediate: '4K Ultra HD Master',
+                  budget: 'Major Production',
+                  locations: 'India & Global Locations',
+                  subtitles: 'English & Regional Subtitles'
+                },
+                hashtags: [`#${m.title.replace(/[^a-zA-Z0-9]/g, '')}`, '#NewRelease', '#IndianCinema'],
+                isLatest: true,
+                isTrending: true
+              };
+            });
+
+            setMoviesList(prev => {
+              const existingTitles = new Set(prev.map(p => p.title.toLowerCase().trim()));
+              const freshAdditions = dynamicList.filter(d => !existingTitles.has(d.title.toLowerCase().trim()));
+              if (freshAdditions.length === 0) return prev;
+              return [...freshAdditions, ...prev];
+            });
+          } catch (err) {
+            console.warn('TMDB dynamic release sync skipped (using curated list):', err);
+          }
+        };
+
+        fetchBrandNewReleases();
+        return () => { isMounted = false; };
+      }, []);
+
       // Live TMDB API Search Handler
       useEffect(() => {
         if (!searchQuery.trim() || searchQuery.length < 2) {
@@ -2929,6 +3033,9 @@
               subtitles: 'English, Multiple Languages'
             },
             hashtags: [`#${fullData.title.replace(/\s+/g, '')}`, '#IndianCinema', '#TMDBLive'],
+            tomatometer: Math.min(99, Math.max(72, Math.round((fullData.vote_average || 8.0) * 10.8))) + '%',
+            pulseScore: Math.min(9.8, Math.max(7.5, parseFloat(((fullData.vote_average || 8.0) * 1.05).toFixed(1)))),
+            isLatest: fullData.release_date ? parseInt(fullData.release_date.split('-')[0]) >= 2024 : true,
             isTrending: true
           };
 
@@ -2953,7 +3060,51 @@
 
       const clearAllWatchlist = () => setWatchlist([]);
 
-      const handleOpenDetails = (movie) => {
+      const handleOpenDetails = async (movie) => {
+        // If it was dynamically loaded from TMDB discover feed and needs full credits/trailer:
+        if (movie.tmdbId && movie.isLiveFeed) {
+          try {
+            const detailUrl = `https://api.themoviedb.org/3/movie/${movie.tmdbId}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos`;
+            const resp = await fetch(detailUrl);
+            const fullData = await resp.json();
+
+            const topCast = (fullData.credits?.cast || []).slice(0, 5).map(c => ({
+              name: c.name,
+              role: c.character || 'Lead Cast',
+              characterBadge: 'Featured Cast',
+              profilePath: c.profile_path ? `https://image.tmdb.org/t/p/w185${c.profile_path}` : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop'
+            }));
+
+            const dirObj = (fullData.credits?.crew || []).find(c => c.job === 'Director');
+            const compObj = (fullData.credits?.crew || []).find(c => c.job === 'Original Music Composer' || c.job === 'Music');
+            const ytObj = (fullData.videos?.results || []).find(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'));
+            const trailerKey = ytObj ? ytObj.key : (movie.trailerYoutubeId || 'tOY-UvBomOY');
+
+            const enriched = {
+              ...movie,
+              director: dirObj ? dirObj.name : movie.director,
+              musicDirector: compObj ? compObj.name : movie.musicDirector,
+              trailerYoutubeId: trailerKey,
+              teasers: [
+                { title: `${fullData.title} Official Trailer`, dur: '2m 30s • 4K', tag: 'Theatrical Cut', ytId: trailerKey }
+              ],
+              cast: topCast.length > 0 ? topCast : movie.cast,
+              runtime: fullData.runtime || movie.runtime,
+              tagline: fullData.tagline || movie.tagline,
+              boxOffice: fullData.revenue ? `₹${Math.round(fullData.revenue / 10000000)} Cr+` : movie.boxOffice,
+              budget: fullData.budget ? `₹${Math.round(fullData.budget / 10000000)} Cr` : movie.budget,
+              isLiveFeed: false
+            };
+            setMoviesList(prev => prev.map(m => m.id === movie.id ? enriched : m));
+            setViewingMovie(enriched);
+            window.location.hash = movie.id;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+          } catch (e) {
+            console.warn('Could not enrich live movie details:', e);
+          }
+        }
+
         setViewingMovie(movie);
         window.location.hash = movie.id;
         window.scrollTo({ top: 0, behavior: 'smooth' });
