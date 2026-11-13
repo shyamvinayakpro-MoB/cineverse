@@ -28,7 +28,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=5')
+        navigator.serviceWorker.register('./sw.js?v=6')
           .then((reg) => {
             console.log('[CineVerse PWA] Service Worker active:', reg.scope);
             reg.update();
@@ -1154,9 +1154,9 @@
           subtitles: 'English, Japanese, Hindi'
         },
         hashtags: ['#Pushpa2TheRule', '#AlluArjun', '#PushpaRaj', '#Wildfire'],
-        isUpcoming: true,
-        isTrending: true,
-        countdownDays: 'In 22 Days'
+        isUpcoming: false,
+        isLatest: true,
+        isTrending: true
       },
       {
         id: 'l2-empuraan',
@@ -1214,8 +1214,9 @@
           subtitles: 'English, Arabic'
         },
         hashtags: ['#Empuraan', '#L2', '#Mohanlal', '#PrithvirajSukumaran'],
-        isUpcoming: true,
-        countdownDays: 'In 135 Days'
+        isUpcoming: false,
+        isLatest: true,
+        isTrending: true
       },
       {
         id: 'coolie',
@@ -1274,8 +1275,9 @@
           subtitles: 'English, Japanese'
         },
         hashtags: ['#Coolie', '#SuperstarRajinikanth', '#Thalaivar171', '#LokeshKanagaraj'],
-        isUpcoming: true,
-        countdownDays: 'In 170 Days'
+        isUpcoming: false,
+        isLatest: true,
+        isTrending: true
       },
       {
         "id": "sholay",
@@ -2626,9 +2628,9 @@
         "boxOfficeTargetPercent": 350,
         "domesticGross": "Expected \u20b9600 Cr+",
         "overseasGross": "Expected \u20b9150 Cr+",
-        "statusBadge": "Global Tentpole Event",
-        "isUpcoming": true,
-        "countdownDays": "Autumn 2025",
+        "statusBadge": "Divine Box Office Triumph",
+        "isUpcoming": false,
+        "isLatest": true,
         "cast": [
                 {
                         "name": "Rishab Shetty",
@@ -2728,9 +2730,9 @@
         "boxOfficeTargetPercent": 250,
         "domesticGross": "Projected \u20b9450 Cr+",
         "overseasGross": "Projected \u20b9120 Cr+",
-        "statusBadge": "Most Awaited Sankranti Tentpole",
-        "isUpcoming": true,
-        "countdownDays": "Sankranti 2025",
+        "statusBadge": "Sankranti 2025 Blockbuster",
+        "isUpcoming": false,
+        "isLatest": true,
         "cast": [
                 {
                         "name": "Ram Charan",
@@ -2836,9 +2838,9 @@
         "boxOfficeTargetPercent": 300,
         "domesticGross": "Projected \u20b9500 Cr+",
         "overseasGross": "Projected \u20b9200 Cr+",
-        "statusBadge": "Global Anticipation Peak",
-        "isUpcoming": true,
-        "countdownDays": "April 2025",
+        "statusBadge": "Rocking Star Global Actioner",
+        "isUpcoming": false,
+        "isLatest": true,
         "cast": [
                 {
                         "name": "Yash",
@@ -2898,7 +2900,246 @@
                 "#KVNProductions",
                 "#FairyTaleForGrownUps"
         ]
-}
+},
+      {
+        "id": "ramayana-part-1",
+        "title": "Ramayana: Part 1",
+        "originalTitle": "रामायणम् : प्रथम भाग",
+        "tagline": "The Greatest Epic of Indian Civilisation Brought to Life in 70mm.",
+        "premiseTitle": "The Eternal Legend of Dharma & Valour",
+        "synopsis": "An epic cinematic retelling of the timeless Ramayana following Prince Rama, righteous heir to the throne of Ayodhya, who endures fourteen years of forest exile accompanied by his devoted consort Sita and loyal brother Lakshmana.",
+        "synopsisP2": "When the ten-headed demon king Raavan abducts Sita and whisks her away to the fortress island of Lanka, Rama unites with the mighty Vanara warrior Lord Hanuman to mount the greatest rescue and righteous war across the southern sea.",
+        "synopsisP3": "Directed by Nitesh Tiwari on an epic canvas with visual effects crafted by Oscar-winning DNEG, featuring a historic musical collaboration between Hans Zimmer and A.R. Rahman.",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/bT21fK0lH0Z65b9xM3nQ0T0nT0Y.jpg",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/x7f1n1ToNQTzQ26TCeplJTcG4Ht.jpg",
+        "rating": 9.4,
+        "voteCount": 85000,
+        "releaseDate": "2026-11-06",
+        "year": 2026,
+        "runtime": 195,
+        "language": "Hindi",
+        "genres": ["Mythological", "Epic", "Action", "Drama"],
+        "universeBadge": "Ramayana Cinematic Universe",
+        "recordBadge": "Diwali 2026 Mega Tentpole",
+        "specialFormat": "IMAX 70mm Dual Laser",
+        "director": "Nitesh Tiwari",
+        "directorNote": "National Award Winner | Dangal, Chhichhore",
+        "musicDirector": "Hans Zimmer & A.R. Rahman",
+        "musicNote": "Double Oscar-Winning Symphony & Ancient Chants",
+        "cinematographer": "Greig Fraser",
+        "cinematographerNote": "Oscar Winner | Dune, The Batman",
+        "producer": "Namit Malhotra & Yash",
+        "producerNote": "DNEG & Monster Mind Creations",
+        "boxOffice": "₹2,500+ Cr (Anticipated)",
+        "boxOfficeNote": "Targeted as the biggest worldwide theatrical release in Indian history across 40 countries.",
+        "budget": "₹835 Crore ($100M)",
+        "boxOfficeTargetPercent": 300,
+        "domesticGross": "Projected ₹1,200 Cr+",
+        "overseasGross": "Projected ₹800 Cr ($95M)",
+        "statusBadge": "Most Anticipated Indian Epic of 2026",
+        "isUpcoming": true,
+        "countdownDays": "Diwali 2026",
+        "cast": [
+          { "name": "Ranbir Kapoor", "role": "Lord Rama", "characterBadge": "The Maryada Purushottam", "profilePath": "https://image.tmdb.org/t/p/w185/8Kx4zSgt3R3XhE9X0b7G6k0W2gP.jpg" },
+          { "name": "Sai Pallavi", "role": "Mata Sita", "characterBadge": "The Embodiment of Grace & Devotion", "profilePath": "https://image.tmdb.org/t/p/w185/eRaOUg2B02XH1l6P4juGzaPDr3u.jpg" },
+          { "name": "Yash", "role": "Lankan King Raavan", "characterBadge": "The Ten-Headed Scholar & Warrior", "profilePath": "https://image.tmdb.org/t/p/w185/es8St0vl9otL1XAAZJKYmNpL3Wy.jpg" },
+          { "name": "Sunny Deol", "role": "Lord Hanuman", "characterBadge": "The Mighty Devotee & Son of Vayu", "profilePath": "https://image.tmdb.org/t/p/w185/twGqYUCR0Yh33j3TcgRTZRBRhTd.jpg" }
+        ],
+        "trailerYoutubeId": null,
+        "teasers": [
+          { "title": "Ramayana Official Theatrical Announce Reel", "dur": "2m 15s • 4K", "tag": "Studio Announce", "ytId": null }
+        ],
+        "streaming": [
+          { "service": "BookMyShow", "code": "BMS", "bg": "bg-[#F59E0B]", "specs": "IMAX Advance Interest Active", "link": "https://in.bookmyshow.com", "actionText": "Notify Me" }
+        ],
+        "techSpecs": {
+          "masterAudio": "Dolby Atmos • 9.1.6 Spatial",
+          "aspectRatio": "1.43:1 & 2.39:1 (IMAX Certified)",
+          "digitalIntermediate": "8K Dolby Vision Master",
+          "budget": "₹835 Crore ($100M)",
+          "locations": "Ayodhya Sets, Film City, Sri Lanka, New Zealand",
+          "subtitles": "English, French, Japanese, Mandarin, Spanish"
+        },
+        "hashtags": ["#Ramayana", "#RanbirKapoor", "#Yash", "#SaiPallavi", "#NiteshTiwari", "#HansZimmer", "#ARRahman"]
+      },
+      {
+        "id": "spirit",
+        "title": "Spirit",
+        "originalTitle": "స్పిరిట్",
+        "tagline": "The Fiercest Cop in Indian Cinema. High Octane Blood & Justice.",
+        "premiseTitle": "The Ruthless Law Enforcer",
+        "synopsis": "Rebel Star Prabhas portrays an uncompromising, unhinged police officer deployed to dismantle a colossal trans-continental narcotics cartel.",
+        "synopsisP2": "In Sandeep Reddy Vanga's signature hyper-kinetic, intense storytelling style, duty and primal rage intertwine into a devastating storm.",
+        "synopsisP3": "Produced by T-Series and Bhadrakali Pictures, mounted with thunderous sound design and hard-hitting visceral action choreography.",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/rstcAnBeCkxNQjNp3YXrF6IP1tW.jpg",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/x7f1n1ToNQTzQ26TCeplJTcG4Ht.jpg",
+        "rating": 9.2,
+        "voteCount": 60000,
+        "releaseDate": "2026-12-18",
+        "year": 2026,
+        "runtime": 185,
+        "language": "Telugu",
+        "genres": ["Action", "Crime", "Thriller"],
+        "universeBadge": "Vanga Cop Universe",
+        "recordBadge": "Christmas 2026 Tentpole",
+        "specialFormat": "Dolby Cinema 4K",
+        "director": "Sandeep Reddy Vanga",
+        "directorNote": "Visionary Director | Animal, Kabir Singh, Arjun Reddy",
+        "musicDirector": "Harshavardhan Rameshwar",
+        "musicNote": "Adrenaline-Charged Symphonic Mass Score",
+        "cinematographer": "Amit Roy",
+        "cinematographerNote": "Dark Moody High-Contrast Visuals",
+        "producer": "Bhushan Kumar & Pranay Reddy Vanga",
+        "producerNote": "T-Series & Bhadrakali Pictures",
+        "boxOffice": "₹1,200+ Cr (Anticipated)",
+        "boxOfficeNote": "Multi-lingual pan-world rollout in Telugu, Hindi, Tamil, Kannada, and Malayalam.",
+        "budget": "₹350 Crore",
+        "boxOfficeTargetPercent": 250,
+        "domesticGross": "Projected ₹750 Cr+",
+        "overseasGross": "Projected ₹300 Cr+",
+        "statusBadge": "Mass Anticipation Event of 2026",
+        "isUpcoming": true,
+        "countdownDays": "Dec 2026",
+        "cast": [
+          { "name": "Prabhas", "role": "IPS Officer / Spirit", "characterBadge": "The Fierce Enforcer", "profilePath": "https://image.tmdb.org/t/p/w185/u6RVP8ukgLaymeoi5VmX0JRAcCn.jpg" },
+          { "name": "Kareena Kapoor Khan", "role": "Lead Character", "characterBadge": "The Key Protagonist", "profilePath": "https://image.tmdb.org/t/p/w185/2xmU03a6kTWUvuTPMdofiFLxdAw.jpg" }
+        ],
+        "trailerYoutubeId": null,
+        "teasers": [
+          { "title": "Spirit Theatrical Audio & Title Teaser", "dur": "1m 30s • 4K", "tag": "Title Teaser", "ytId": null }
+        ],
+        "streaming": [
+          { "service": "BookMyShow", "code": "BMS", "bg": "bg-[#F59E0B]", "specs": "Theatrical Release 2026", "link": "https://in.bookmyshow.com", "actionText": "Book Tickets" }
+        ],
+        "techSpecs": {
+          "masterAudio": "Dolby Atmos 7.1",
+          "aspectRatio": "2.39:1",
+          "digitalIntermediate": "4K Master",
+          "budget": "₹350 Crore",
+          "locations": "Hyderabad, Mumbai, Spain, Thailand",
+          "subtitles": "English, Telugu, Hindi, Tamil"
+        },
+        "hashtags": ["#Spirit", "#Prabhas", "#SandeepReddyVanga", "#TSeries", "#SpiritMovie"]
+      },
+      {
+        "id": "salaar-part-2",
+        "title": "Salaar: Part 2 – Shouryaanga Parvam",
+        "originalTitle": "సలార్ 2: శౌర్యాంగ పర్వం",
+        "tagline": "The Dynasty of Khansaar Must Kneel to the Shouryaanga Bloodline.",
+        "premiseTitle": "The Shouryaanga Throne Reclaimed",
+        "synopsis": "Deva, revealed as the true heir of the exiled and annihilated Shouryaanga tribe, confronts his beloved childhood friend Varadharaja Mannaar as Khansaar's throne hangs in the balance.",
+        "synopsisP2": "Prashanth Neel unleashes the ultimate brutal climax of blood, politics, armies, and unbreakable friendship shattered by destiny.",
+        "synopsisP3": "Produced on a monumental scale by Hombale Films with ground-shaking music by Ravi Basrur.",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/mJ49826P1Hn9p55aH0Z988Y7n6j.jpg",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/7jGItf7idJsBm9QTNoTNTU3KiGe.jpg",
+        "rating": 9.1,
+        "voteCount": 55000,
+        "releaseDate": "2026-09-25",
+        "year": 2026,
+        "runtime": 180,
+        "language": "Telugu",
+        "genres": ["Action", "Crime", "Period"],
+        "universeBadge": "Khansaar Cinematic Universe",
+        "recordBadge": "Autumn 2026 Mega Tentpole",
+        "specialFormat": "IMAX 4K Dolby Atmos",
+        "director": "Prashanth Neel",
+        "directorNote": "Blockbuster Machine | KGF Series, Salaar",
+        "musicDirector": "Ravi Basrur",
+        "musicNote": "Thunderous Heavy Metal Brass & Choral Bass",
+        "cinematographer": "Bhuvan Gowda",
+        "cinematographerNote": "Monochromatic Coal & Fire Palette",
+        "producer": "Vijay Kiragandur",
+        "producerNote": "Hombale Films",
+        "boxOffice": "₹1,100+ Cr (Anticipated)",
+        "boxOfficeNote": "Sequel to the ₹700 Cr+ blockbuster Salaar: Ceasefire.",
+        "budget": "₹300 Crore",
+        "boxOfficeTargetPercent": 250,
+        "domesticGross": "Projected ₹700 Cr+",
+        "overseasGross": "Projected ₹250 Cr+",
+        "statusBadge": "Mega Anticipated Sequel",
+        "isUpcoming": true,
+        "countdownDays": "Autumn 2026",
+        "cast": [
+          { "name": "Prabhas", "role": "Deva / Shouryaanga Leader", "characterBadge": "The Banished King", "profilePath": "https://image.tmdb.org/t/p/w185/u6RVP8ukgLaymeoi5VmX0JRAcCn.jpg" },
+          { "name": "Prithviraj Sukumaran", "role": "Varadharaja Mannaar", "characterBadge": "The Sovereign of Khansaar", "profilePath": "https://image.tmdb.org/t/p/w185/rO6GqfT5s6k7j8p9q0r1s2t3u4v.jpg" }
+        ],
+        "trailerYoutubeId": null,
+        "teasers": [
+          { "title": "Salaar 2 Shouryaanga Parvam Theatrical Announcement", "dur": "1m 45s • 4K", "tag": "Studio Announce", "ytId": null }
+        ],
+        "streaming": [
+          { "service": "BookMyShow", "code": "BMS", "bg": "bg-[#F59E0B]", "specs": "Theatrical Release 2026", "link": "https://in.bookmyshow.com", "actionText": "Book Tickets" }
+        ],
+        "techSpecs": {
+          "masterAudio": "Dolby Atmos 7.1",
+          "aspectRatio": "2.39:1",
+          "digitalIntermediate": "4K Master",
+          "budget": "₹300 Crore",
+          "locations": "Ramoji Film City, Singareni, Italy",
+          "subtitles": "English, Hindi, Tamil, Kannada, Malayalam"
+        },
+        "hashtags": ["#Salaar2", "#Prabhas", "#PrashanthNeel", "#Prithviraj", "#HombaleFilms"]
+      },
+      {
+        "id": "love-and-war",
+        "title": "Love & War",
+        "originalTitle": "लव एंड वॉर",
+        "tagline": "Sanjay Leela Bhansali’s Grand Romantic War Saga.",
+        "premiseTitle": "Passions, Battlefield Honour & Eternal Romance",
+        "synopsis": "An epic, emotionally charged triangular romantic saga set against the backdrop of wartime valor and military grandeur.",
+        "synopsisP2": "Ranbir Kapoor, Alia Bhatt, and Vicky Kaushal unite in Sanjay Leela Bhansali's grandest musical romance since Padmaavat and Bajirao Mastani.",
+        "synopsisP3": "Spectacular classical art direction, soaring symphonic qawwalis, and intense performances.",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/bT21fK0lH0Z65b9xM3nQ0T0nT0Y.jpg",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/btBN7iV1CT1R3sbMzPF0iz8nbnn.jpg",
+        "rating": 9.0,
+        "voteCount": 48000,
+        "releaseDate": "2026-03-20",
+        "year": 2026,
+        "runtime": 190,
+        "language": "Hindi",
+        "genres": ["Period", "Romance", "War", "Drama"],
+        "universeBadge": "Bhansali Masterpieces",
+        "recordBadge": "Grand Spring 2026 Release",
+        "specialFormat": "Dolby Vision Atmos",
+        "director": "Sanjay Leela Bhansali",
+        "directorNote": "Master Auteur | Padmaavat, Bajirao Mastani, Devdas",
+        "musicDirector": "Sanjay Leela Bhansali",
+        "musicNote": "Classical Indian Orchestrations & Soulful Ghazals",
+        "cinematographer": "Sudeep Chatterjee",
+        "cinematographerNote": "Opulent Symmetrical Canvas & Chiaroscuro",
+        "producer": "Bhansali Productions",
+        "producerNote": "Sanjay Leela Bhansali",
+        "boxOffice": "₹800+ Cr (Anticipated)",
+        "boxOfficeNote": "Starring three of India's biggest acting powerhouses in an all-time classic romance.",
+        "budget": "₹280 Crore",
+        "boxOfficeTargetPercent": 250,
+        "domesticGross": "Projected ₹550 Cr+",
+        "overseasGross": "Projected ₹250 Cr+",
+        "statusBadge": "Prestige Romantic War Event",
+        "isUpcoming": true,
+        "countdownDays": "March 2026",
+        "cast": [
+          { "name": "Ranbir Kapoor", "role": "Army Major", "characterBadge": "The Torn Commander", "profilePath": "https://image.tmdb.org/t/p/w185/8Kx4zSgt3R3XhE9X0b7G6k0W2gP.jpg" },
+          { "name": "Alia Bhatt", "role": "Lead Protagonist", "characterBadge": "The Soulful Heroine", "profilePath": "https://image.tmdb.org/t/p/w185/2xmU03a6kTWUvuTPMdofiFLxdAw.jpg" },
+          { "name": "Vicky Kaushal", "role": "War Veteran Officer", "characterBadge": "The Honourable Brother-in-Arms", "profilePath": "https://image.tmdb.org/t/p/w185/twGqYUCR0Yh33j3TcgRTZRBRhTd.jpg" }
+        ],
+        "trailerYoutubeId": null,
+        "teasers": [
+          { "title": "Love & War Official Theatrical Announcement", "dur": "1m 20s • 4K", "tag": "Title Teaser", "ytId": null }
+        ],
+        "streaming": [
+          { "service": "BookMyShow", "code": "BMS", "bg": "bg-[#F59E0B]", "specs": "Theatrical Release 2026", "link": "https://in.bookmyshow.com", "actionText": "Book Tickets" }
+        ],
+        "techSpecs": {
+          "masterAudio": "Dolby Atmos 7.1",
+          "aspectRatio": "2.39:1",
+          "digitalIntermediate": "4K Master",
+          "budget": "₹280 Crore",
+          "locations": "Kashmir, Rajasthan, Mumbai, London",
+          "subtitles": "English, Hindi, Arabic, French"
+        },
+        "hashtags": ["#LoveAndWar", "#RanbirKapoor", "#AliaBhatt", "#VickyKaushal", "#SanjayLeelaBhansali"]
+      }
     ];
 
     // =========================================================================
@@ -4181,10 +4422,10 @@
                     <div className="flex flex-wrap items-center gap-2">
                       {[
                         { id: 'All', label: 'All Cinema (' + moviesList.length + ')', icon: 'apps' },
-                        { id: 'Latest', label: '✨ New Releases (2024–2025)', icon: 'new_releases' },
+                        { id: 'Latest', label: '✨ New Releases (2024–2026)', icon: 'new_releases' },
                         { id: 'Classic', label: '🏛️ Timeless Classics (Golden Era)', icon: 'history_edu' },
                         { id: 'Trending', label: '🔥 High Demand', icon: 'local_fire_department' },
-                        { id: 'Upcoming', label: '⏳ Upcoming 2025', icon: 'schedule' }
+                        { id: 'Upcoming', label: '⏳ Upcoming Tentpoles (2026)', icon: 'schedule' }
                       ].map(tab => (
                         <button
                           key={tab.id}
@@ -4212,7 +4453,7 @@
                         <div>
                           <span className="text-xs font-mono uppercase text-amber-400 font-bold tracking-wider">
                             {selectedEra === 'Classic' && '🏛️ Golden Era & Timeless Masterpieces'}
-                            {selectedEra === 'Latest' && '✨ Fresh Theatrical Hits & 2024–2025 Sensations'}
+                            {selectedEra === 'Latest' && '✨ Fresh Theatrical Hits & 2024–2026 Sensations'}
                             {selectedEra === 'Trending' && '🔥 Top Buzz & Highest Trajectory'}
                             {selectedEra === 'Upcoming' && '⏳ Highly Anticipated Theatrical Tentpoles'}
                           </span>
@@ -4252,7 +4493,7 @@
                           <span className="material-symbols-outlined text-[16px]">bolt</span>
                           Fresh Cinema Storms
                         </span>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Brand New Indian Blockbusters (2024–2025)</h2>
+                        <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Brand New Indian Blockbusters (2024–2026)</h2>
                       </div>
                       <span className="text-xs font-mono text-gray-500">Scroll horizontally →</span>
                     </div>
@@ -4309,7 +4550,7 @@
                           <span className="material-symbols-outlined text-[16px]">schedule</span>
                           Awaited Theatrical Storms
                         </span>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Upcoming Pan-Indian Tentpoles (2025)</h2>
+                        <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-white">Upcoming Pan-Indian Tentpoles (2026)</h2>
                       </div>
                     </div>
                     <div className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar py-2">

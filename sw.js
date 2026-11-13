@@ -3,8 +3,8 @@
 // High-performance offline caching, asset streaming, and background sync
 // =========================================================================
 
-const CACHE_NAME = 'cineverse-core-v5';
-const IMAGE_CACHE = 'cineverse-images-v5';
+const CACHE_NAME = 'cineverse-core-v6';
+const IMAGE_CACHE = 'cineverse-images-v6';
 
 // Critical core assets to pre-cache for 100% offline functionality
 const PRECACHE_ASSETS = [
