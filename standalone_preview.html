@@ -28,7 +28,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=6')
+        navigator.serviceWorker.register('./sw.js?v=7')
           .then((reg) => {
             console.log('[CineVerse PWA] Service Worker active:', reg.scope);
             reg.update();
@@ -148,6 +148,13 @@
     /* iOS Safe Area Utility Classes */
     .pt-safe {
       padding-top: max(env(safe-area-inset-top, 0px), 0px) !important;
+    }
+    /* iOS Solid High-Contrast AppBars (Zero blur bleed or invisible text on iOS) */
+    header, .ios-appbar-solid {
+      background-color: #0c0c0e !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
     }
     .pb-safe {
       padding-bottom: max(env(safe-area-inset-bottom, 0px), 0px) !important;
@@ -2168,7 +2175,7 @@
         "synopsisP2": "When Devara discovers that their stolen cargo is being used by ruthless syndicates to commit atrocities across the subcontinent, he commands his men to abandon piracy. His blood brother Bhaira secretly revolts, plotting a deadly ambush during an oceanic festival.",
         "synopsisP3": "Years later, Devara's gentle, timid son Vara lives under the looming shadow of his father's vengeful ghost, guarding a bloodcurdling secret that keeps the treacherous coastal warlords paralyzed with terror.",
         "posterUrl": "https://image.tmdb.org/t/p/w780/lQfuaXjANoTsdx5iS0gCXlK9D2L.jpg",
-        "backdropUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/zmr611Q4JGZEDKvsT8tfuDLB4nG.jpg",
         "rating": 7.2,
         "voteCount": 54000,
         "releaseDate": "2024-09-27",
@@ -2910,8 +2917,8 @@
         "synopsis": "An epic cinematic retelling of the timeless Ramayana following Prince Rama, righteous heir to the throne of Ayodhya, who endures fourteen years of forest exile accompanied by his devoted consort Sita and loyal brother Lakshmana.",
         "synopsisP2": "When the ten-headed demon king Raavan abducts Sita and whisks her away to the fortress island of Lanka, Rama unites with the mighty Vanara warrior Lord Hanuman to mount the greatest rescue and righteous war across the southern sea.",
         "synopsisP3": "Directed by Nitesh Tiwari on an epic canvas with visual effects crafted by Oscar-winning DNEG, featuring a historic musical collaboration between Hans Zimmer and A.R. Rahman.",
-        "posterUrl": "https://image.tmdb.org/t/p/w780/bT21fK0lH0Z65b9xM3nQ0T0nT0Y.jpg",
-        "backdropUrl": "https://image.tmdb.org/t/p/w1280/x7f1n1ToNQTzQ26TCeplJTcG4Ht.jpg",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/vBQ7wks68OhJKlb3RnXSl2yXBXK.jpg",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/yHVZncPRZr63mezRX20IyKLrSkv.jpg",
         "rating": 9.4,
         "voteCount": 85000,
         "releaseDate": "2026-11-06",
@@ -2972,7 +2979,7 @@
         "synopsisP2": "In Sandeep Reddy Vanga's signature hyper-kinetic, intense storytelling style, duty and primal rage intertwine into a devastating storm.",
         "synopsisP3": "Produced by T-Series and Bhadrakali Pictures, mounted with thunderous sound design and hard-hitting visceral action choreography.",
         "posterUrl": "https://image.tmdb.org/t/p/w780/rstcAnBeCkxNQjNp3YXrF6IP1tW.jpg",
-        "backdropUrl": "https://image.tmdb.org/t/p/w1280/x7f1n1ToNQTzQ26TCeplJTcG4Ht.jpg",
+        "backdropUrl": "https://image.tmdb.org/t/p/w1280/yHVZncPRZr63mezRX20IyKLrSkv.jpg",
         "rating": 9.2,
         "voteCount": 60000,
         "releaseDate": "2026-12-18",
@@ -3030,7 +3037,7 @@
         "synopsis": "Deva, revealed as the true heir of the exiled and annihilated Shouryaanga tribe, confronts his beloved childhood friend Varadharaja Mannaar as Khansaar's throne hangs in the balance.",
         "synopsisP2": "Prashanth Neel unleashes the ultimate brutal climax of blood, politics, armies, and unbreakable friendship shattered by destiny.",
         "synopsisP3": "Produced on a monumental scale by Hombale Films with ground-shaking music by Ravi Basrur.",
-        "posterUrl": "https://image.tmdb.org/t/p/w780/mJ49826P1Hn9p55aH0Z988Y7n6j.jpg",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/nxG7ChjxVa769RcNveooZ7nXODI.jpg",
         "backdropUrl": "https://image.tmdb.org/t/p/w1280/7jGItf7idJsBm9QTNoTNTU3KiGe.jpg",
         "rating": 9.1,
         "voteCount": 55000,
@@ -3089,7 +3096,7 @@
         "synopsis": "An epic, emotionally charged triangular romantic saga set against the backdrop of wartime valor and military grandeur.",
         "synopsisP2": "Ranbir Kapoor, Alia Bhatt, and Vicky Kaushal unite in Sanjay Leela Bhansali's grandest musical romance since Padmaavat and Bajirao Mastani.",
         "synopsisP3": "Spectacular classical art direction, soaring symphonic qawwalis, and intense performances.",
-        "posterUrl": "https://image.tmdb.org/t/p/w780/bT21fK0lH0Z65b9xM3nQ0T0nT0Y.jpg",
+        "posterUrl": "https://image.tmdb.org/t/p/w780/eNNsYveQyZduWb37KG8WMOlaVgJ.jpg",
         "backdropUrl": "https://image.tmdb.org/t/p/w1280/btBN7iV1CT1R3sbMzPF0iz8nbnn.jpg",
         "rating": 9.0,
         "voteCount": 48000,
@@ -3585,7 +3592,7 @@
         <div className="min-h-screen bg-[#080808] text-white selection:bg-[#F59E0B] selection:text-black">
           
           {/* HEADER / NAVIGATION BAR */}
-          <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0e]/95 backdrop-blur-2xl border-b border-white/10 transition-all duration-300 pt-safe">
+          <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c0c0e] border-b border-white/10 shadow-2xl transition-all duration-300 pt-safe ios-appbar-solid">
             
             {/* Offline Alert Bar (Visible only when offline) */}
             {(isSimulatedOffline || !isOnline) && (
@@ -4805,10 +4812,13 @@
                       
                       {/* Atmospheric Cinematic Backdrop with Pulse Zoom */}
                       <img 
-                        src={trailerMovie.backdropUrl || trailerMovie.posterUrl} 
+                        src={trailerMovie.backdropUrl || getAiCinematicBannerSvg(trailerMovie)} 
                         alt={trailerMovie.title}
-                        className="absolute inset-0 w-full h-full object-cover opacity-25 filter blur-sm scale-105 transition-transform duration-1000 group-hover:scale-110"
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        className="absolute inset-0 w-full h-full object-cover opacity-35 filter blur-sm scale-105 transition-transform duration-1000 group-hover:scale-110"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = getAiCinematicBannerSvg(trailerMovie);
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40"></div>
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
@@ -5537,7 +5547,7 @@
           {/* ----------------------------------------------------------------- */}
           <div className="sm:hidden min-h-screen bg-surface pb-24 text-on-surface">
             {/* Mobile Header Bar */}
-            <header className="sticky top-0 w-full z-50 pt-safe bg-surface-container-lowest/85 backdrop-blur-xl border-b border-white/10 shadow-lg">
+            <header className="sticky top-0 w-full z-50 pt-safe bg-[#0c0c0e] border-b border-white/10 shadow-2xl ios-appbar-solid">
               <div className="h-14 px-4 flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0">
                   <button 
@@ -5566,9 +5576,13 @@
             <div className="relative w-full overflow-hidden bg-surface-container-lowest">
               <div className="relative w-full h-[380px]">
                 <img 
-                  src={movie.backdropUrl || movie.posterUrl} 
+                  src={movie.backdropUrl || getAiCinematicBannerSvg(movie)} 
                   alt={movie.title}
                   className="w-full h-full object-cover object-top filter brightness-[0.88] contrast-[1.08]"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = getAiCinematicBannerSvg(movie);
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/80 via-transparent to-transparent"></div>
@@ -5986,9 +6000,13 @@
               {/* Card Background Backdrop with Cinematic Overlays */}
               <div className="absolute inset-0">
                 <img 
-                  src={movie.backdropUrl} 
+                  src={movie.backdropUrl || getAiCinematicBannerSvg(movie)} 
                   alt={movie.title}
                   className="w-full h-full object-cover brightness-[0.70]" 
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = getAiCinematicBannerSvg(movie);
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-transparent"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent max-w-4xl"></div>
@@ -6473,6 +6491,93 @@
     }
 
     // --- BULLETPROOF SVG POSTER GENERATOR (OFFLINE & NETWORK RESILIENT) ---
+        // --- AUTOMATIC AI CINEMATIC BANNER GENERATOR (FALLBACK & GENERATIVE ART) ---
+    function getAiCinematicBannerSvg(movie) {
+      if (!movie) return '';
+      const safeTitle = (movie.title || 'CineVerse Presentation').replace(/[<>&"]/g, '');
+      const safeOrig = (movie.originalTitle || '').replace(/[<>&"]/g, '');
+      const safeLang = (movie.language || 'Indian').replace(/[<>&"]/g, '');
+      const safeGenre = (movie.genres && movie.genres[0] ? movie.genres[0] : 'Epic Cinema').replace(/[<>&"]/g, '');
+      const safeTag = (movie.tagline || 'Experience the Landmark Pan-Indian Spectacle').replace(/[<>&"]/g, '');
+      const safeDirector = (movie.director || 'Visionary Director').replace(/[<>&"]/g, '');
+      const safeYear = (movie.year || '2026').toString();
+
+      // Dynamic Genre Color Themes
+      let g1 = '#281a10', g2 = '#14141a', g3 = '#08080a', accent = '#F59E0B', badgeText = '✦ AI CINEMATIC KEY ART';
+      const gLower = safeGenre.toLowerCase();
+      if (gLower.includes('action') || gLower.includes('crime')) {
+        g1 = '#32080c'; g2 = '#160c10'; g3 = '#070608'; accent = '#E50914'; badgeText = '✦ AI MASS ACTION KEY ART';
+      } else if (gLower.includes('sci-fi') || gLower.includes('mytholog')) {
+        g1 = '#1c1b35'; g2 = '#10101d'; g3 = '#06060c'; accent = '#F59E0B'; badgeText = '✦ AI MYTHOS CINEMATIC KEY ART';
+      } else if (gLower.includes('thriller') || gLower.includes('horror')) {
+        g1 = '#0f241a'; g2 = '#0c1612'; g3 = '#050a08'; accent = '#10B981'; badgeText = '✦ AI ATMOSPHERIC KEY ART';
+      } else if (gLower.includes('period') || gLower.includes('romance')) {
+        g1 = '#2d1822'; g2 = '#170e14'; g3 = '#090508'; accent = '#EC4899'; badgeText = '✦ AI OPULENT SAGA KEY ART';
+      }
+
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+        <defs>
+          <radialGradient id="aiBg" cx="50%" cy="35%" r="75%">
+            <stop offset="0%" stop-color="${g1}"/>
+            <stop offset="45%" stop-color="${g2}"/>
+            <stop offset="100%" stop-color="${g3}"/>
+          </radialGradient>
+          <linearGradient id="aiGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFE082"/>
+            <stop offset="50%" stop-color="${accent}"/>
+            <stop offset="100%" stop-color="#B45309"/>
+          </linearGradient>
+          <linearGradient id="filmGlint" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="transparent"/>
+            <stop offset="50%" stop-color="${accent}" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </linearGradient>
+          <pattern id="lensStars" x="0" y="0" width="160" height="90" patternUnits="userSpaceOnUse">
+            <circle cx="20" cy="15" r="1.2" fill="#fff" opacity="0.35"/>
+            <circle cx="85" cy="45" r="1.5" fill="${accent}" opacity="0.5"/>
+            <circle cx="140" cy="70" r="0.8" fill="#fff" opacity="0.4"/>
+          </pattern>
+        </defs>
+        <rect width="1280" height="720" fill="url(#aiBg)"/>
+        <rect width="1280" height="720" fill="url(#lensStars)"/>
+        
+        <!-- Anamorphic Lens Flare Beam -->
+        <ellipse cx="640" cy="360" rx="600" ry="2" fill="url(#filmGlint)" opacity="0.8"/>
+        <ellipse cx="640" cy="360" rx="320" ry="140" fill="${accent}" opacity="0.08"/>
+
+        <!-- Subtle Geometric Cinema Grid Motif -->
+        <circle cx="640" cy="360" r="280" fill="none" stroke="${accent}" stroke-opacity="0.12" stroke-width="1.5" stroke-dasharray="8 6"/>
+        <circle cx="640" cy="360" r="200" fill="none" stroke="#fff" stroke-opacity="0.06" stroke-width="1"/>
+        
+        <!-- Outer Vignette Shading -->
+        <rect width="1280" height="720" fill="none" stroke="#000" stroke-opacity="0.5" stroke-width="30"/>
+
+        <!-- Top Badge Row -->
+        <g transform="translate(60, 60)">
+          <rect x="0" y="0" width="340" height="34" rx="17" fill="rgba(14,14,18,0.85)" stroke="${accent}" stroke-opacity="0.4" stroke-width="1.2"/>
+          <circle cx="18" cy="17" r="4" fill="${accent}"/>
+          <text x="32" y="22" font-family="'Space Grotesk', 'Syne', sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="${accent}">${badgeText}</text>
+          
+          <text x="1160" y="22" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600" fill="#9CA3AF">${safeLang.toUpperCase()} CINEMA • ${safeYear}</text>
+        </g>
+
+        <!-- Center Cinematic Title Block -->
+        <g transform="translate(640, 340)" text-anchor="middle">
+          ${safeOrig ? `<text x="0" y="-80" font-family="'Space Grotesk', sans-serif" font-size="22" font-weight="700" fill="${accent}" opacity="0.9" letter-spacing="2">${safeOrig}</text>` : ''}
+          <text x="0" y="0" font-family="'Space Grotesk', 'Syne', sans-serif" font-size="58" font-weight="900" fill="#ffffff" letter-spacing="-1">${safeTitle.toUpperCase()}</text>
+          <text x="0" y="42" font-family="'Space Grotesk', 'Manrope', sans-serif" font-size="16" font-weight="600" fill="#E5E7EB" letter-spacing="0.5" opacity="0.9">— ${safeTag} —</text>
+        </g>
+
+        <!-- Bottom Metadata Bar -->
+        <g transform="translate(60, 650)">
+          <text x="0" y="0" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#fff">Directed by <tspan fill="${accent}">${safeDirector}</tspan></text>
+          <text x="1160" y="0" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="${accent}" letter-spacing="1">IMAX 70MM • DOLBY VISION • 4K ATMOS</text>
+        </g>
+      </svg>`;
+
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
     function getPosterFallbackSvg(title, lang, year) {
       const safeTitle = (title || 'CineVerse').replace(/[<>&"]/g, '');
       const safeLang = (lang || 'IN').replace(/[<>&"]/g, '');
