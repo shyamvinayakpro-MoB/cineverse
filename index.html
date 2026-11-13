@@ -4033,57 +4033,149 @@
             </div>
           </footer>
 
-          {/* TRAILER MODAL WITH 4K YOUTUBE NOCOOKIE */}
-          {trailerMovie && (
-            <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fadeIn">
-              <div className="relative w-full max-w-5xl bg-[#121215] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-4 sm:p-6">
-                <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                  <div className="flex items-center gap-3">
-                    <span className="w-3 h-3 rounded-full bg-[#E50914] animate-pulse"></span>
-                    <h3 className="font-display font-bold text-white text-base sm:text-xl">
-                      {trailerMovie.title} — Official 4K Trailer
-                    </h3>
-                  </div>
-                  <button
-                    onClick={() => setTrailerMovie(null)}
-                    className="w-10 h-10 rounded-full glass-card hover:bg-white/20 text-white flex items-center justify-center font-bold"
-                  >
-                    ✕
-                  </button>
-                </div>
+          {/* TRAILER MODAL WITH DYNAMIC DUMMY VIDEO BANNER FALLBACK */}
+          {trailerMovie && (() => {
+            const hasValidTrailer = trailerMovie.trailerYoutubeId && 
+                                    trailerMovie.trailerYoutubeId !== 'none' && 
+                                    trailerMovie.trailerYoutubeId !== 'unavailable' &&
+                                    trailerMovie.trailerYoutubeId !== 'dQw4w9WgXcQ';
 
-                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${trailerMovie.trailerYoutubeId}?autoplay=1&rel=0&modestbranding=1`}
-                    title={`${trailerMovie.title} Official Trailer`}
-                    className="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                </div>
+            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(trailerMovie.title + ' ' + (trailerMovie.year || '') + ' official trailer 4k')}`;
 
-                <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-gray-400 pt-1">
-                  <span>Language: <strong className="text-white">{trailerMovie.language}</strong> • Year: <strong className="text-white">{trailerMovie.year}</strong></span>
-                  <div className="flex items-center gap-2">
-                    <a
-                      href={`https://www.youtube.com/watch?v=${trailerMovie.trailerYoutubeId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 rounded-xl bg-white/10 hover:bg-[#F59E0B] hover:text-black font-bold text-white transition-colors flex items-center gap-1.5"
-                    >
-                      <span>Watch in 4K on YouTube ↗</span>
-                    </a>
+            return (
+              <div className="fixed inset-0 z-50 bg-black/92 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-fadeIn">
+                <div className="relative w-full max-w-5xl bg-[#121216] border border-white/15 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-4 sm:p-6">
+                  
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className={`w-3 h-3 rounded-full shrink-0 ${hasValidTrailer ? 'bg-[#E50914] animate-pulse' : 'bg-amber-400'}`}></span>
+                      <h3 className="font-display font-bold text-white text-base sm:text-xl truncate">
+                        {trailerMovie.title} {hasValidTrailer ? '— Official 4K Trailer' : '— Theatrical Preview'}
+                      </h3>
+                    </div>
                     <button
                       onClick={() => setTrailerMovie(null)}
-                      className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300"
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass-card hover:bg-white/20 text-white flex items-center justify-center font-bold text-sm shrink-0"
+                      title="Close"
                     >
-                      Close Player
+                      ✕
                     </button>
                   </div>
+
+                  {/* Main Player or Dummy Video Banner */}
+                  {hasValidTrailer ? (
+                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
+                      <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${trailerMovie.trailerYoutubeId}?autoplay=1&rel=0&modestbranding=1`}
+                        title={`${trailerMovie.title} Official Trailer`}
+                        className="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    /* ========================================================================= */
+                    /* CINEMATIC DUMMY VIDEO BANNER (FALLBACK WHEN TRAILER IS UNAVAILABLE)       */
+                    /* ========================================================================= */
+                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#0a0a0e] border border-white/10 shadow-2xl flex flex-col justify-between p-6 sm:p-10 group">
+                      
+                      {/* Atmospheric Cinematic Backdrop with Pulse Zoom */}
+                      <img 
+                        src={trailerMovie.backdropUrl || trailerMovie.posterUrl} 
+                        alt={trailerMovie.title}
+                        className="absolute inset-0 w-full h-full object-cover opacity-25 filter blur-sm scale-105 transition-transform duration-1000 group-hover:scale-110"
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40"></div>
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
+
+                      {/* Top Banner Tag */}
+                      <div className="relative z-10 flex items-center justify-between">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold tracking-wider">
+                          <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                          <span>THEATRICAL CUT • EMBED PENDING STUDIO RELEASE</span>
+                        </div>
+                        <span className="text-xs font-mono text-gray-400 hidden sm:inline">
+                          {trailerMovie.language} Cinema • {trailerMovie.year}
+                        </span>
+                      </div>
+
+                      {/* Center Content: Dummy Video Art & Message */}
+                      <div className="relative z-10 max-w-2xl space-y-3 py-2">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/30 to-orange-500/30 border border-amber-400/30 flex items-center justify-center text-2xl shadow-lg">
+                            🎬
+                          </div>
+                          <div>
+                            <h4 className="font-display font-black text-xl sm:text-2xl text-white">
+                              Official Digital Trailer Coming Soon
+                            </h4>
+                            <p className="text-xs text-amber-400 font-mono">
+                              Playing Exclusively in Theaters & IMAX Screens
+                            </p>
+                          </div>
+                        </div>
+
+                        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                          The official web embed for <strong className="text-white font-semibold">{trailerMovie.title}</strong> has not yet been released for third-party streaming by the production studio. You can search directly on YouTube or watch the CineVerse 4K Showcase Reel below.
+                        </p>
+                      </div>
+
+                      {/* Bottom Action Buttons inside Dummy Banner */}
+                      <div className="relative z-10 flex flex-wrap items-center gap-3 pt-2">
+                        <a
+                          href={youtubeSearchUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-display font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all"
+                        >
+                          <span>▶</span>
+                          <span>Search Trailer on YouTube ↗</span>
+                        </a>
+
+                        <button
+                          onClick={() => setTrailerMovie({ ...trailerMovie, trailerYoutubeId: 'tOY-UvBomOY' })}
+                          className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all hover:border-amber-400"
+                        >
+                          <span className="text-amber-400">⚡</span>
+                          <span>Play CineVerse 4K Showcase Reel</span>
+                        </button>
+                      </div>
+
+                    </div>
+                  )}
+
+                  {/* Modal Footer Bar */}
+                  <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-gray-400 pt-1">
+                    <span>
+                      Language: <strong className="text-white">{trailerMovie.language}</strong> • 
+                      Year: <strong className="text-white">{trailerMovie.year}</strong>
+                    </span>
+                    
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={hasValidTrailer ? `https://www.youtube.com/watch?v=${trailerMovie.trailerYoutubeId}` : youtubeSearchUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-xl bg-white/10 hover:bg-[#F59E0B] hover:text-black font-bold text-white transition-colors flex items-center gap-1.5"
+                      >
+                        <span>{hasValidTrailer ? 'Watch in 4K on YouTube ↗' : 'Search on YouTube ↗'}</span>
+                      </a>
+                      
+                      <button
+                        onClick={() => setTrailerMovie(null)}
+                        className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* WATCHLIST DRAWER */}
           {isWatchlistOpen && (
